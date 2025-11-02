@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <limits>
 
 class Intrebare{
 private:
@@ -24,7 +25,7 @@ public:
         return (raspuns_utilizator - 1) == raspunsCorect;
     }
 
-    int getraspunsCorect() const { //getter pentru raspuns corect
+    int getraspunsCorectIndex() const { //getter pentru raspuns corect
         return raspunsCorect;
     }
 
@@ -134,7 +135,6 @@ public:
 
     //destructor
     ~Nivel() {
-        // ATENTIE: Am eliminat referinta la idNivel care nu exista
         std::cout << "Nivel " << numeNivel << " distrus.\n";
     }
 
@@ -180,8 +180,13 @@ void Nivel::ruleaza_test() {
         while (!corect) {
             std::cout << "\n" << intrebare;
             std::cout << "Raspunsul tau (nr optiune): ";
-            std::cin >> raspuns_utilizator;
-
+            if (!(std::cin >> raspuns_utilizator)) {
+            //curatare buffer
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Intrare invalida! Incearca din nou.\n";
+            continue;
+            }
             if (intrebare.verificaRaspuns(raspuns_utilizator)) {
                 std::cout << "Raspuns CORECT!\n";
                 corect = true;
