@@ -219,7 +219,7 @@ public:
     }
     void aplicatie() {
         std::cout << "\nBun venit, " << numeUtilizator << "!\n";
-        size_t i=0; bool raspuns;
+        size_t i=0; int raspuns;
         while (i < nivele.size()) {
             Nivel& nivel = nivele[i];
             if (!nivel.estePromovat()) { //verific daca nivelul este mai intai promovat
@@ -231,8 +231,11 @@ public:
             }
             std::cout <<"\n\n";
             std::cout << "Vrei sa continui la Nivelul " << i + 2 << "? (1/0): ";
-            std::cin >> raspuns;
-
+            if (!(std::cin >> raspuns)) {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                raspuns = 0; // Presupunem NU
+            }
             //utilizatorul decide daca doreste sa continue cu nivelul urmator
             if (raspuns == 1) {
                 i++;
