@@ -1,0 +1,39 @@
+8
+Care este capitala Canadei?
+3
+Toronto;Vancouver;Ottawa;Montreal
+
+
+Cate laturi are un trapez?
+2
+Trei;Patru;Cinci
+
+
+Ce substanta da culoarea rosie sangelui?
+1
+Hemoglobina;Clorofila;Melanina;Insulina
+
+
+Cine a pictat Mona Lisa?
+4
+Van Gogh;Picasso;Michelangelo;Leonardo da Vinci
+
+
+Cine a fost primul om care a calcat pe Luna?
+2
+Yuri Gagarin;Neil Armstrong;Buzz Aldrin;Alan Shepard
+
+
+Care este moneda oficiala a Japoniei?
+3
+Won;Euro;Yen;Dolar
+
+
+Care este singurul continent fara desert?
+4
+Asia;Africa;Europa;America de Nord
+
+
+Din ce metal este facuta majoritatea firului de creion?
+1
+Grafit;Plumb;Fier;Argint
