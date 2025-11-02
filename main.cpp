@@ -19,7 +19,7 @@ public:
     }
     Intrebare() : raspunsCorect{-1} {} // constructor default
 
-    ~Intrebare()  = default; ///destructor
+    ~Intrebare()  = default; //destructor
 
     bool verificaRaspuns(int raspuns_utilizator) const {
         return (raspuns_utilizator - 1) == raspunsCorect;
@@ -153,7 +153,6 @@ public:
 
     //operator<<
     friend std::ostream& operator<<(std::ostream& os, const Nivel& niv) {
-        // MODIFICARE: Am eliminat idNivel/pragPromovare care nu existau
         os << "\n=== Nivel " << niv.numeNivel << " ===\n";
         os << "Status: " ;
         if(niv.nivelPromovat ==1) os << "PROMOVAT" ;
@@ -318,7 +317,7 @@ std::vector<Intrebare> citesteIntrebari(const std::string& numeFisier) {
         if (linie.empty()) continue; //sarim peste liniile goale
 
         std::string text, optiuni_str;
-        int raspuns_corect_index;
+        int raspuns_corect_index=0;
 
         //pima linie - intrebarea
         text = linie;
