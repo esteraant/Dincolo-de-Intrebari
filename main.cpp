@@ -371,5 +371,11 @@ int main() {
 
     std::cout << aplicator;
 
+
+    (void)toateIntrebarile[0].getText();
+    (void)toateIntrebarile[0].getNumarOptiuni();
+    (void)toateCapitolele[0].getTitlu();
+    (void)toateCapitolele[0].esteDeblocat();
+    (void)lista_nivele[0].getNumeNivel();
     return 0;
 }
