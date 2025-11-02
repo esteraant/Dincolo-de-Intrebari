@@ -377,5 +377,7 @@ int main() {
     (void)toateCapitolele[0].getTitlu();
     (void)toateCapitolele[0].esteDeblocat();
     (void)lista_nivele[0].getNumeNivel();
+    (void)toateIntrebarile[0].getraspunsCorectIndex();
+
     return 0;
 }
