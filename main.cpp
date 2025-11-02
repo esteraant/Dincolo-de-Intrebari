@@ -3,7 +3,6 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include <limits>
 
 class Intrebare{
 private:
@@ -25,12 +24,11 @@ public:
         return (raspuns_utilizator - 1) == raspunsCorect;
     }
 
-    int getraspunsCorectIndex() const { //getter pentru raspuns corect
-        return raspunsCorect;
-    }
-
     const std::string& getText() const {  //getter pt text
         return text;
+    }
+    int getraspunsCorectIndex() const { //getter pentru raspuns corect
+        return raspunsCorect;
     }
 
     size_t getNumarOptiuni() const { //getter nr de optiuni
@@ -59,7 +57,6 @@ public:
     {
         this->titlu = titlu;
         this->continut = continut;
-        std::cout << "Capitolul " << titlu << " a fost creat.\n";
     }
 
     CapitolPoveste() : deblocat{false} {} //constructor default
@@ -142,7 +139,7 @@ public:
     //rularea testului
     void ruleaza_test();
 
-    // getter pt numeNivel (in loc de idNivel)
+    // getter pt numeNivel
     const std::string& getNumeNivel() const {
         return numeNivel;
     }
@@ -179,13 +176,7 @@ void Nivel::ruleaza_test() {
         while (!corect) {
             std::cout << "\n" << intrebare;
             std::cout << "Raspunsul tau (nr optiune): ";
-            if (!(std::cin >> raspuns_utilizator)) {
-            //curatare buffer
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Intrare invalida! Incearca din nou.\n";
-            continue;
-            }
+            std::cin >> raspuns_utilizator;
             if (intrebare.verificaRaspuns(raspuns_utilizator)) {
                 std::cout << "Raspuns CORECT!\n";
                 corect = true;
@@ -230,11 +221,7 @@ public:
             }
             std::cout <<"\n\n";
             std::cout << "Vrei sa continui la Nivelul " << i + 2 << "? (1/0): ";
-            if (!(std::cin >> raspuns)) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                raspuns = 0; // Presupunem NU
-            }
+            std::cin >> raspuns;
             //utilizatorul decide daca doreste sa continue cu nivelul urmator
             if (raspuns == 1) {
                 i++;
@@ -247,7 +234,7 @@ public:
     }
     // operator<<
     friend std::ostream& operator<<(std::ostream& os, const Quiz& qa) {
-        os << "\nRaport final pentru " << qa.numeUtilizator << ":\n";
+        os << "\nSituatii finale pentru " << qa.numeUtilizator << ":\n";
         for (const auto& nivel : qa.nivele) {
             os << nivel;
         }
@@ -274,7 +261,7 @@ std::vector<CapitolPoveste> citestePovesti(const std::string& numeFisier) {
          std::cerr << "Eroare: nu s-a putut citi numarul de capitole.\n";
          return capitole;
     }
-    //terminam linia cu numarul
+    //terminam linia cu numarul de cap
     std::getline(fin, linie);
 
     for (int i = 0; i < nrCapitole; i++) {
@@ -285,11 +272,6 @@ std::vector<CapitolPoveste> citestePovesti(const std::string& numeFisier) {
         //citim continutul pana intalnim un rand gol, care marcheaza sfarsitul cap
         while (std::getline(fin, linie) && !linie.empty())
             continut_total += linie + "\n";
-
-        // eliminam  '\n' final adăugat în plus
-        if (!continut_total.empty()) {
-            continut_total.pop_back();
-        }
 
         //cream si adaugam noul obiect CapitolPoveste
         capitole.emplace_back(titlu, continut_total);
@@ -317,13 +299,13 @@ std::vector<Intrebare> citesteIntrebari(const std::string& numeFisier) {
         if (linie.empty()) continue; //sarim peste liniile goale
 
         std::string text, optiuni_str;
-        int raspuns_corect_index=0;
+        int raspuns_corect=0;
 
         //pima linie - intrebarea
         text = linie;
 
         // linia 2 - raspunsul corect
-        if (!std::getline(fin, linie) || !(std::stringstream(linie) >> raspuns_corect_index)) break;
+        if (!std::getline(fin, linie) || !(std::stringstream(linie) >> raspuns_corect)) break;
 
         // linia 3 optiunile separate prin ;
         if (!std::getline(fin, optiuni_str)) break;
@@ -336,7 +318,7 @@ std::vector<Intrebare> citesteIntrebari(const std::string& numeFisier) {
         }
 
         //adaugam obiectul Intrebare
-        intrebari.emplace_back(text, optiuni, raspuns_corect_index - 1);
+        intrebari.emplace_back(text, optiuni, raspuns_corect - 1);
 
         //sarim peste randul gol separator
         std::getline(fin, linie);
@@ -383,7 +365,7 @@ int main() {
     //rulare aplicatie quiz
     std::string numeUtilizator;
     std::cout << "Introdu un nume de utilizator: ";
-    std::getline(std::cin, numeUtilizator);
+    std::cin >> numeUtilizator;
     Quiz aplicator(lista_nivele, numeUtilizator);
     aplicator.aplicatie();
 
