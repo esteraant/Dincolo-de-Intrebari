@@ -1,7 +1,7 @@
 #include "Nivel.h"
-#include <utility> // Pentru std::move și std::swap
+#include <utility>
 
-// Constructor de inițializare
+///constructor de initializare
 Nivel::Nivel(const std::string& nume, std::vector<std::unique_ptr<Intrebare>> intrebari_, const CapitolPoveste& poveste_)
     : nivelPromovat{false}
 {
@@ -10,39 +10,36 @@ Nivel::Nivel(const std::string& nume, std::vector<std::unique_ptr<Intrebare>> in
     this->poveste = poveste_;
 }
 
-// Constructor de copiere (Deep Copy)
+///constructor de copiere
 Nivel::Nivel(const Nivel& nivel)
     : numeNivel{nivel.numeNivel}, poveste{nivel.poveste}, nivelPromovat{nivel.nivelPromovat}
 {
-    std::cout << "Nivel " << nivel.numeNivel << " copiat (Deep Clone).\n";
-
-    // Copierea profunda a vectorului de intrebari folosind clone() (Constructor Virtual)
-    for (const auto& intrebare_ptr : nivel.intrebari) {
-        this->intrebari.push_back(intrebare_ptr->clone());
-    }
+    ///std::cout << "Nivel " << nivel.numeNivel << " copiat.\n";
+    for (const std::unique_ptr<Intrebare>& intrebare_ptr : nivel.intrebari) {
+    this->intrebari.push_back(intrebare_ptr->clone());
+}
 }
 
-// Operator de atribuire (Deep Copy - Copy-and-Swap Idiom)
+///operator de atribuire
 Nivel& Nivel::operator=(const Nivel& nivel) {
-    std::cout << "Atribuire Nivel " << nivel.numeNivel << " (Deep Clone).\n";
+    ///std::cout << "Atribuire Nivel " << nivel.numeNivel << " \n";
 
     if (this != &nivel) {
-        // Creează o copie temporară
-        Nivel temp = nivel;
+        ///creeaza o copie
+        Nivel copie = nivel;
 
-        // Schimbăm resursele
-        std::swap(numeNivel, temp.numeNivel);
-        std::swap(intrebari, temp.intrebari);
-        std::swap(poveste, temp.poveste);
-        std::swap(nivelPromovat, temp.nivelPromovat);
+        ///swap de resurse - pt a evita scrierea de doua ori a codului de copiere
+        std::swap(numeNivel, copie.numeNivel);
+        std::swap(intrebari, copie.intrebari);
+        std::swap(poveste, copie.poveste);
+        std::swap(nivelPromovat, copie.nivelPromovat);
     }
     return *this;
 }
 
-// rularea testului
 void Nivel::ruleaza_test() {
     int raspuns_utilizator;
-    size_t scor_total = 0; // Pentru a folosi functia virtuala specifica temei
+    size_t scor_total = 0;
     size_t raspunsuri_corecte = 0;
 
     std::cout << "\n " << numeNivel << " \n";
@@ -52,21 +49,21 @@ void Nivel::ruleaza_test() {
         Intrebare* intrebare = intrebari[i].get();
         bool corect = false;
 
-        // Identificăm tipul de întrebare: Răspuns Liber?
+        ///idenfiticam tipul de intrebare - daca e raspuns liber
         IntrebareRaspunsLiber* liber_ptr = dynamic_cast<IntrebareRaspunsLiber*>(intrebare);
 
         while (!corect) {
             std::cout << "\n" << *intrebare;
 
             if (liber_ptr) {
-                // CAZUL 1: RASPUNS LIBER (Citim string)
+                ///raspuns liber - citim stringul
                 std::string raspuns_utilizator_str;
                 std::cout << "Raspunsul tau (text): ";
 
-                // std::ws ignoră spațiile albe de la început, și apoi citim intreaga linie
                 std::getline(std::cin >> std::ws, raspuns_utilizator_str);
+                ///std:ws ignora spatiile albe de la inceput si citim toata linia
 
-                if (intrebare->verificaRaspunsText(raspuns_utilizator_str)) { // Apel polimorfic nou
+                if (intrebare->verificaRaspunsText(raspuns_utilizator_str)) {
                     std::cout << "Raspuns CORECT! Ai castigat " << intrebare->calculeazaPunctaj() << " puncte.\n";
                     scor_total += intrebare->calculeazaPunctaj();
                     raspunsuri_corecte++;
@@ -77,19 +74,18 @@ void Nivel::ruleaza_test() {
                 }
 
             } else {
-                // CAZUL 2: RASPUNS PE INDICE (Citim int)
+                ///altfel citim int
                 int raspuns_utilizator_int;
                 std::cout << "Raspunsul tau (nr optiune): ";
 
-                if (!(std::cin >> raspuns_utilizator_int)) {
-                    // Gestiune erori citire
+                if (!(std::cin >> raspuns_utilizator_int)) { ///erori
                     std::cin.clear();
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                     std::cout << "\nIntrare invalida. Te rog introdu numarul optiunii.\n";
                     continue;
                 }
 
-                if (intrebare->verificaRaspuns(raspuns_utilizator_int)) { // Apel polimorfic existent
+                if (intrebare->verificaRaspuns(raspuns_utilizator_int)) {
                     std::cout << "Raspuns CORECT! Ai castigat " << intrebare->calculeazaPunctaj() << " puncte.\n";
                     scor_total += intrebare->calculeazaPunctaj();
                     raspunsuri_corecte++;
@@ -98,13 +94,14 @@ void Nivel::ruleaza_test() {
                     std::cout << "\n Raspuns GRESIT! \n";
                     std::cout << "Incearca din nou.\n";
                 }
-                // Dupa citirea int, curatam buffer-ul
+                ///curatam buffer-ul
+                std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             }
         }
     }
 
-    // Dupa ce a raspuns corect la toate intrebarile
+    ///dupa ce a rasp corect la toate intrebarile
     if (raspunsuri_corecte == intrebari.size()) {
         this->poveste.deblocheaza();
         this->nivelPromovat = true;
@@ -114,7 +111,7 @@ void Nivel::ruleaza_test() {
 }
 
 
-// Getter pt numeNivel
+///getter pt numeNivel
 const std::string& Nivel::getNumeNivel() const {
     return numeNivel;
 }
@@ -135,7 +132,7 @@ CapitolPoveste* Nivel::getCapitol() const {
 }
 
 
-// Operator<<
+///operator<<
 std::ostream& operator<<(std::ostream& os, const Nivel& niv) {
     os << "\n=== Nivel " << niv.numeNivel << " ===\n";
     os << "Status: ";

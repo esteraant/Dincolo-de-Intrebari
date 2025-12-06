@@ -6,57 +6,69 @@
 #include <utility>
 #include <algorithm>
 #include <set>
+#include <cctype>
 
-// Includem clasele derivate pentru instantiere polimorfica
 #include "IntrebareGrila.h"
 #include "IntrebareAdevaratFals.h"
 #include "IntrebareRaspunsLiber.h"
-#include "IntrebareMultipla.h" // NOU: Clasa derivata suplimentara
+#include "IntrebareMultipla.h"
 
 
-// Funcție pentru citirea capitolelor de poveste
+///functie pt a elimina spatiile albe
+std::string trim(const std::string& str) {
+    size_t start = 0;
+    ///cauta primul car care nu este spatiu
+    while (start < str.length() && std::isspace(static_cast<unsigned char>(str[start]))) {
+        start++;
+    }
+
+    size_t finish = str.length();
+    ///cauta ultimul car care nu este spatiu
+    while (finish > start && std::isspace(static_cast<unsigned char>(str[finish - 1]))) {
+        finish--;
+    }
+
+    return str.substr(start, finish - start);
+}
+
+
+///citirea capitolelor de poveste
 std::vector<CapitolPoveste> citestePovesti(const std::string& numeFisier) {
 
     std::ifstream fin(numeFisier);
     std::vector<CapitolPoveste> capitole;
 
     if (!fin.is_open()) {
-        // ARUNCA EXCEPȚIA 1: Eroare de I/O
         throw EroareFisierInexistent(numeFisier);
     }
 
     std::string linie;
     int nrCapitole;
 
-    // citim nr de capitole care se afla pe prima linie
+    ///citim nr de capitole care se afla pe prima linie
     if (!(fin >> nrCapitole)) {
-        // ARUNCA EXCEPȚIA 2: Eroare de Format
         throw EroareFormatDate("Nu s-a putut citi numarul de capitole de pe prima linie.");
     }
-    // terminam linia cu numarul de cap
+    ///terminam linia cu numarul de capitole
     std::getline(fin, linie);
 
     for (int i = 0; i < nrCapitole; i++) {
         std::string titlu, continut_total;
 
-        // citim titlul
+        ///citim titlul
         if (!std::getline(fin, titlu)) {
              throw EroareFormatDate("Fisierul s-a terminat brusc inainte de citirea titlului capitolului " + std::to_string(i + 1) + ".");
         }
 
-        // citim continutul pana intalnim un rand gol
+        ///citim continutul pana intalnim un rand gol
         while (std::getline(fin, linie) && !linie.empty())
             continut_total += linie + "\n";
 
-        // cream si adaugam noul obiect CapitolPoveste
+        ///cream si adaugam noul obiect CapitolPoveste
         capitole.emplace_back(titlu, continut_total);
     }
     return capitole;
 }
-
-
-// Funcție pentru citirea întrebărilor
-// utils.cpp (Funcția citesteIntrebari - Logica NOUA de citire L)
 
 std::vector<std::unique_ptr<Intrebare>> citesteIntrebari(const std::string& numeFisier) {
     std::ifstream fin(numeFisier);
@@ -68,38 +80,36 @@ std::vector<std::unique_ptr<Intrebare>> citesteIntrebari(const std::string& nume
 
     std::string linie;
 
-    // sarim peste prima linie care contine nr de intrebari
+    ///sarim peste prima linie care contine nr de intrebari
     std::getline(fin, linie);
 
-    // citim intrebarile
+    ///citim intrebarile
     while (std::getline(fin, linie)) {
         if (linie.empty()) continue;
 
         char tipIntrebare = linie[0];
 
         std::string text;
-        std::string raspuns_corect_str; // Va stoca fie numar (pentru G, A, L), fie string (pentru M)
-        int raspuns_corect_unic = 0; // Pentru tipurile G, A, L
-        std::vector<std::string> optiuni; // Pentru tipurile G, M
+        std::string raspuns_corect_str; /// ex: G, A, L, M
+        int raspuns_corect_unic = 0; ///pt G, A, L
+        std::vector<std::string> optiuni; ///pt G, M
 
-        // linia 2 - intrebarea propriu-zisa
+        ///linia 2 - intrebarea propriu-zisa
         if (!std::getline(fin, text))
             throw EroareFormatDate("Lipsa text intrebare dupa tipul '" + std::string(1, tipIntrebare) + "'.");
 
-        // Linia 3 - Raspunsul Corect (Formatul depinde de tip)
+        ///linia 3 - Raspunsul Corect
         if (!std::getline(fin, linie))
             throw EroareFormatDate("Lipsa raspunsului corect (linia 3) dupa intrebarea: '" + text + "'.");
 
 
         if (tipIntrebare == 'G' || tipIntrebare == 'A' || tipIntrebare == 'M') {
-             // Raspuns numeric/indici (se citeste raspuns_corect_str si se parseaza mai jos)
              raspuns_corect_str = linie;
         } else if (tipIntrebare == 'L') {
-            // NOU: Raspuns Liber (Lista de string-uri separate prin ;)
             raspuns_corect_str = linie;
         }
 
-        // Linia 4: Optiunile (necesare pentru G si M)
+        ///linia 4: optiunile - pentru G si M
         if (tipIntrebare == 'G' || tipIntrebare == 'M') {
              std::string optiuni_str;
              if (!std::getline(fin, optiuni_str))
@@ -107,53 +117,64 @@ std::vector<std::unique_ptr<Intrebare>> citesteIntrebari(const std::string& nume
 
              std::stringstream ss(optiuni_str);
              std::string token;
-             while (std::getline(ss, token, ';')) {
-                 size_t first = token.find_first_not_of(' ');
-                 size_t last = token.find_last_not_of(' ');
-                 if (std::string::npos != first) {
-                     token = token.substr(first, (last - first + 1));
-                 }
-                 optiuni.push_back(token);
-             }
-        }
 
-        // LOGICA DE CREARE A OBIECTULUI
+             ///separa fiecare optiune separata de ';'
+             while (std::getline(ss, token, ';')) {
+                 token = trim(token);
+                 ///adaugam optiunea doar daca nu este goala dupa curatare
+                 if (!token.empty())
+                     optiuni.push_back(token);
+             }
+          }
+
         if (tipIntrebare == 'G') {
+            ///convertim rasp corect citit ca string in int
              std::stringstream(raspuns_corect_str) >> raspuns_corect_unic;
+            ///cream dinamic un ob intrebaregrila
              intrebari.push_back(std::make_unique<IntrebareGrila>(text, optiuni, raspuns_corect_unic - 1));
-        } else if (tipIntrebare == 'A') {
-             std::stringstream(raspuns_corect_str) >> raspuns_corect_unic;
-             intrebari.push_back(std::make_unique<IntrebareAdevaratFals>(text, raspuns_corect_unic == 1 ? 1 : 0));
-        } else if (tipIntrebare == 'L') {
-            // NOU: Parsam lista de raspunsuri text corecte
+        }
+        else if (tipIntrebare == 'A') {
+             std::stringstream(raspuns_corect_str) >> raspuns_corect_unic; ///convertim in int
+             intrebari.push_back(std::make_unique<IntrebareAdevaratFals>(text, raspuns_corect_unic == 1 ? 1 : 0)); ///cream si 1-A, 0-F
+        }
+        else if (tipIntrebare == 'L') {
+            ///lista de rasp corecte separate prin ;
             std::stringstream ss_raspunsuri(raspuns_corect_str);
             std::string token;
-            std::vector<std::string> raspunsuri_libere_corecte;
+            std::vector<std::string> raspunsuri_libere_corecte; ///vector care stocheaza lista finala
+        ///separam stringul folosind ; si umplem vectorul
             while (std::getline(ss_raspunsuri, token, ';')) {
+                // Adaugă trim aici pentru a curăța spațiile din răspunsurile libere
+                token = trim(token);
                 raspunsuri_libere_corecte.push_back(token);
             }
-            // Creare obiect Raspuns Liber
+            ///creare obiect raspunsliber
             intrebari.push_back(std::make_unique<IntrebareRaspunsLiber>(text, raspunsuri_libere_corecte));
 
-        } else if (tipIntrebare == 'M') {
-             std::set<int> indici_multipli;
+        }
+        else if (tipIntrebare == 'M') {
+             std::set<int> indici_multipli; ///stocam indicii corecti
              std::stringstream ss_raspuns(raspuns_corect_str);
              std::string indice_str;
              int indice;
 
              while (std::getline(ss_raspuns, indice_str, ',')) {
+                 // Curățăm spațiile din jurul indicelui
+                 indice_str = trim(indice_str);
+
                  if (std::stringstream(indice_str) >> indice) {
                      indici_multipli.insert(indice);
                  }
              }
+             ///daca nu am gasit optiuni
              if (optiuni.empty()) throw EroareFormatDate("Lipsa optiunilor pentru intrebarea multipla.");
              intrebari.push_back(std::make_unique<IntrebareMultipla>(text, optiuni, indici_multipli));
 
-        } else {
-             throw EroareFormatDate("Tip de intrebare necunoscut ('" + std::string(1, tipIntrebare) + "') pentru intrebarea: '" + text + "'.");
+        } else { ///niciun tip de intrebare nu a fost recunoscut
+             throw EroareFormatDate("Tip de intrebare necunoscut (" + std::string(1, tipIntrebare) + ") pentru intrebarea: " + text + ".");
         }
 
-        // sarim peste randul gol separator
+        ///sarim peste randul gol separator
         std::getline(fin, linie);
     }
 

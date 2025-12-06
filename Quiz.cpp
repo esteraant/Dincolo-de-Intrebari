@@ -2,9 +2,9 @@
 #include <limits>
 #include <utility>
 
-// Constructor de inițializare
+///constructor de init
 Quiz::Quiz(std::vector<Nivel> niv, const std::string& nume) {
-    this->nivele = std::move(niv); // Mutăm vectorul de Niveluri
+    this->nivele = std::move(niv); ///mutam vectorul de niveluri
     this->numeUtilizator = nume;
 }
 
@@ -12,6 +12,7 @@ void Quiz::aplicatie() {
     std::cout << "\nBun venit, " << numeUtilizator << "!\n";
     size_t i = 0;
     int raspuns;
+    ///parcurgem toate niv
     while (i < nivele.size()) {
         Nivel& nivel = nivele[i];
         if (!nivel.estePromovat()) {
@@ -27,13 +28,13 @@ void Quiz::aplicatie() {
         std::cout << "Vrei sa continui la Nivelul " << i + 2 << "? (1/0): ";
 
         if (!(std::cin >> raspuns)) {
-            std::cin.clear();
+            std::cin.clear(); ///daca utilizatorul scrie ceva gresit (string in loc de int)
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             raspuns = 0;
         }
 
         if (raspuns == 1) {
-            i++;
+            i++; ///trecem la niv urm
         }
         else {
             std::cout << "\nAplicatia se opreste. Sper ca ai avut o experienta placuta!\n";
@@ -42,10 +43,10 @@ void Quiz::aplicatie() {
     }
 }
 
-// operator<<
+///operator<<
 std::ostream& operator<<(std::ostream& os, const Quiz& qa) {
     os << "\nSituatii finale pentru " << qa.numeUtilizator << ":\n";
-    for (const auto& nivel : qa.nivele) {
+    for (const Nivel& nivel : qa.nivele) {
         os << nivel;
     }
     return os;
