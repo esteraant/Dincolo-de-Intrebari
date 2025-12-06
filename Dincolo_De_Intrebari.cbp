@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Dincolo_De_Intrebari" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Dincolo_De_Intrebari" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Dincolo_De_Intrebari" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="CapitolPoveste.cpp" />
+		<Unit filename="CapitolPoveste.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Intrebare.cpp" />
+		<Unit filename="Intrebare.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="IntrebareAdevaratFals.cpp" />
+		<Unit filename="IntrebareAdevaratFals.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="IntrebareGrila.cpp" />
+		<Unit filename="IntrebareGrila.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="IntrebareMultipla.cpp" />
+		<Unit filename="IntrebareMultipla.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="IntrebareRaspunsLiber.cpp" />
+		<Unit filename="IntrebareRaspunsLiber.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Nivel.cpp" />
+		<Unit filename="Nivel.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Quiz.cpp" />
+		<Unit filename="Quiz.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="aplicatie_exceptii.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="intrebari.txt" />
+		<Unit filename="main.cpp" />
+		<Unit filename="poveste.txt" />
+		<Unit filename="tastatura.txt" />
+		<Unit filename="utils.cpp" />
+		<Unit filename="utils.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>

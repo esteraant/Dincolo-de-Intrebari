@@ -1,383 +1,125 @@
+#include "Intrebare.h"
+#include "IntrebareGrila.h" ///folosim pentru dynamic_cast
+#include "CapitolPoveste.h"
+#include "Nivel.h"
+#include "Quiz.h"
+#include "utils.h"
+#include "aplicatie_exceptii.h"
+
 #include <iostream>
 #include <vector>
 #include <string>
-#include <fstream>
-#include <sstream>
+#include <limits>
+#include <memory>
+#include <utility>
 
-class Intrebare{
-private:
-    std::string text;
-    std::vector<std::string> raspunsuriPosibile;
-    int raspunsCorect;
-public:
-    Intrebare(const std::string& t, const std::vector<std::string>& rP, int rC)
-    {
-        this->text = t;
-        this->raspunsuriPosibile = rP;
-        this->raspunsCorect = rC;
-    }
-    Intrebare() : raspunsCorect{-1} {} // constructor default
+///functii
+std::vector<std::unique_ptr<Intrebare>> citesteIntrebari(const std::string& numeFisier);
+std::vector<CapitolPoveste> citestePovesti(const std::string& numeFisier);
 
-    ~Intrebare()  = default; //destructor
-
-    bool verificaRaspuns(int raspuns_utilizator) const {
-        return (raspuns_utilizator - 1) == raspunsCorect;
-    }
-
-    const std::string& getText() const {  //getter pt text
-        return text;
-    }
-    int getraspunsCorectIndex() const { //getter pentru raspuns corect
-        return raspunsCorect;
-    }
-
-    size_t getNumarOptiuni() const { //getter nr de optiuni
-        return raspunsuriPosibile.size();
-    }
-
-    //operator<<
-    friend std::ostream& operator<<(std::ostream& os, const Intrebare& intrebare) {
-        os  << intrebare.text << "\n";
-        for (size_t i = 0; i < intrebare.raspunsuriPosibile.size(); i++) {
-            os << "  " << i + 1 << ") " << intrebare.raspunsuriPosibile[i] << "\n";
-        }
-        return os;
-    }
-};
-
-
-class CapitolPoveste{
-private:
-    std::string titlu;
-    std::string continut;
-    bool deblocat;
-
-public:
-    CapitolPoveste(const std::string& titlu, const std::string& continut) : deblocat{false} //construtor de init
-    {
-        this->titlu = titlu;
-        this->continut = continut;
-    }
-
-    CapitolPoveste() : deblocat{false} {} //constructor default
-    ~CapitolPoveste() = default; //destructor
-
-    void deblocheaza() {
-        this->deblocat = true;
-    }
-
-    bool esteDeblocat() const { //getter pt statusul deblocat
-        return deblocat;
-    }
-
-    const std::string& getTitlu() const { //getter pt titlu
-        return titlu;
-    }
-
-    //operator<<
-    friend std::ostream& operator<<(std::ostream& os, const CapitolPoveste& cap) {
-        os<< "~      " << cap.titlu << "     ~\n";
-        if (cap.deblocat) {
-            os<<cap.continut << "\n";
-        }
-        else{
-            os<<"Capitol blocat. Raspunde corect la intrebari pentru a-l debloca.\n";
-        }
-        return os;
-    }
-};
-
-
-class Nivel{
-private:
-    std::string numeNivel;
-    std::vector<Intrebare> intrebari;
-    CapitolPoveste poveste;
-    bool nivelPromovat;
-
-public:
-
-    Nivel(const std::string& nume, const std::vector<Intrebare>& intrebari_, const CapitolPoveste& poveste_)
-        : nivelPromovat{false}
-    {
-        this->numeNivel = nume;
-        this->intrebari = intrebari_;
-        this->poveste = poveste_;
-    }
-
-    Nivel() : nivelPromovat{false} {}
-
-    //constructor de copiere
-    Nivel(const Nivel& nivel)
-        : nivelPromovat{nivel.nivelPromovat}
-    {
-        std::cout << "Nivel " << nivel.numeNivel << " copiat.\n";
-        this->numeNivel = nivel.numeNivel;
-        this->intrebari = nivel.intrebari;
-        this->poveste = nivel.poveste;
-    }
-
-    //operator de atribuire
-    Nivel& operator=(const Nivel& nivel) {
-        std::cout << "Atribuire Nivel " << nivel.numeNivel << ".\n";
-
-        if (this != &nivel) {
-            this->numeNivel = nivel.numeNivel;
-            this->intrebari = nivel.intrebari;
-            this->poveste = nivel.poveste;
-            this->nivelPromovat = nivel.nivelPromovat;
-        }
-        return *this;
-    }
-
-    //destructor
-    ~Nivel() {
-        std::cout << "Nivel " << numeNivel << " distrus.\n";
-    }
-
-
-    //rularea testului
-    void ruleaza_test();
-
-    // getter pt numeNivel
-    const std::string& getNumeNivel() const {
-        return numeNivel;
-    }
-
-    bool estePromovat() const {
-        return nivelPromovat;
-    }
-
-    //operator<<
-    friend std::ostream& operator<<(std::ostream& os, const Nivel& niv) {
-        os << "\n=== Nivel " << niv.numeNivel << " ===\n";
-        os << "Status: " ;
-        if(niv.nivelPromovat ==1) os << "PROMOVAT" ;
-        else os << "NEPROMOVAT";
-        os << "\n";
-        os << "Intrebari: " << niv.intrebari.size() << "\n";
-        os << niv.poveste;
-        return os;
-    }
-};
-
-
-void Nivel::ruleaza_test() {
-    int raspuns_utilizator;
-
-    std::cout << "\n " << numeNivel << " \n";
-    std::cout << "Raspunde corect la fiecare intrebare pentru a continua!\n";
-
-    for (size_t i = 0; i < intrebari.size(); i++) {
-        const Intrebare& intrebare = intrebari[i];
-        bool corect = false;
-
-        //se executa pana cand utilizatorul raspunde corect
-        while (!corect) {
-            std::cout << "\n" << intrebare;
-            std::cout << "Raspunsul tau (nr optiune): ";
-            std::cin >> raspuns_utilizator;
-            if (intrebare.verificaRaspuns(raspuns_utilizator)) {
-                std::cout << "Raspuns CORECT!\n";
-                corect = true;
-            }
-            else {
-                std::cout << "\n Raspuns GRESIT! \n";
-                std::cout << "Incearca din nou.\n";
-            }
-        }
-    }
-    //dupa ce a raspuns corect la toate intrebarile
-    this->poveste.deblocheaza();
-    this->nivelPromovat = true;
-    std::cout << "\n FELICITARI! Capitol deblocat! \n";
-    std::cout << this->poveste;
-
-}
-
-
-class Quiz {
-private:
-    std::vector<Nivel> nivele;
-    std::string numeUtilizator;
-
-public:
-    Quiz(const std::vector<Nivel>& niv, const std::string& nume) {
-        this->nivele = niv;
-        this->numeUtilizator = nume;
-
-    }
-    void aplicatie() {
-        std::cout << "\nBun venit, " << numeUtilizator << "!\n";
-        size_t i=0; int raspuns;
-        while (i < nivele.size()) {
-            Nivel& nivel = nivele[i];
-            if (!nivel.estePromovat()) { //verific daca nivelul este mai intai promovat
-                nivel.ruleaza_test();
-            }
-            if (i == nivele.size() - 1) {
-                std::cout << "\n FELICITARI!! Ai deblocat toate capitolele!! \n";
-                break; //end while
-            }
-            std::cout <<"\n\n";
-            std::cout << "Vrei sa continui la Nivelul " << i + 2 << "? (1/0): ";
-            std::cin >> raspuns;
-            //utilizatorul decide daca doreste sa continue cu nivelul urmator
-            if (raspuns == 1) {
-                i++;
-            }
-            else {
-                std::cout << "\nAplicatia se opreste. Sper ca ai avut o experienta placuta!\n";
-                return;
-            }
-        }
-    }
-    // operator<<
-    friend std::ostream& operator<<(std::ostream& os, const Quiz& qa) {
-        os << "\nSituatii finale pentru " << qa.numeUtilizator << ":\n";
-        for (const auto& nivel : qa.nivele) {
-            os << nivel;
-        }
-        return os;
-    }
-};
-
-
-std::vector<CapitolPoveste> citestePovesti(const std::string& numeFisier) {
-
-    std::ifstream fin(numeFisier);
-    std::vector<CapitolPoveste> capitole;
-
-    if (!fin.is_open()) {
-        std::cerr << "Eroare: nu s-a putut deschide fisierul " << numeFisier << "\n";
-        return capitole;
-    }
-
-    std::string linie;
-
-    //citim nr de capitole care se afla pe prima linie
-    int nrCapitole;
-    if (!(fin >> nrCapitole)) {
-         std::cerr << "Eroare: nu s-a putut citi numarul de capitole.\n";
-         return capitole;
-    }
-    //terminam linia cu numarul de cap
-    std::getline(fin, linie);
-
-    for (int i = 0; i < nrCapitole; i++) {
-        std::string titlu, continut_total;
-        //citim tilul care e pe o singura linie
-        if (!std::getline(fin, titlu)) break;
-
-        //citim continutul pana intalnim un rand gol, care marcheaza sfarsitul cap
-        while (std::getline(fin, linie) && !linie.empty())
-            continut_total += linie + "\n";
-
-        //cream si adaugam noul obiect CapitolPoveste
-        capitole.emplace_back(titlu, continut_total);
-    }
-    return capitole;
-}
-
-
-std::vector<Intrebare> citesteIntrebari(const std::string& numeFisier) {
-    std::ifstream fin(numeFisier);
-    std::vector<Intrebare> intrebari;
-
-    if (!fin.is_open()) {
-        std::cerr << "Eroare: nu s-a putut deschide fisierul" << numeFisier << "\n";
-        return intrebari;
-    }
-
-    std::string linie;
-
-    //sarim peste prima linie care contine nr de intrebari
-    std::getline(fin, linie);
-
-    //citim intrebarile
-    while (std::getline(fin, linie)) {
-        if (linie.empty()) continue; //sarim peste liniile goale
-
-        std::string text, optiuni_str;
-        int raspuns_corect=0;
-
-        //pima linie - intrebarea
-        text = linie;
-
-        // linia 2 - raspunsul corect
-        if (!std::getline(fin, linie) || !(std::stringstream(linie) >> raspuns_corect)) break;
-
-        // linia 3 optiunile separate prin ;
-        if (!std::getline(fin, optiuni_str)) break;
-
-        std::vector<std::string> optiuni;
-        std::stringstream ss(optiuni_str);
-        std::string token;
-        while (std::getline(ss, token, ';')) {
-            optiuni.push_back(token);
-        }
-
-        //adaugam obiectul Intrebare
-        intrebari.emplace_back(text, optiuni, raspuns_corect - 1);
-
-        //sarim peste randul gol separator
-        std::getline(fin, linie);
-    }
-
-    return intrebari;
-}
 
 int main() {
-    //incarcam datele din fisiere
-    std::vector<Intrebare> toateIntrebarile = citesteIntrebari("intrebari.txt");
-    std::vector<CapitolPoveste> toateCapitolele = citestePovesti("poveste.txt");
 
-    if (toateIntrebarile.empty() || toateCapitolele.empty()) {
-        std::cerr << "\nEroare: Nu s-au putut incarca intrebarile sau capitolele din fisiere.\n";
+    std::vector<std::unique_ptr<Intrebare>> toateIntrebarile;
+    std::vector<CapitolPoveste> toateCapitolele;
+
+    try {  ///blocl try incapsuleaza toata logica de incarcare a datelor unde pot aparea erori
+
+        toateIntrebarile = citesteIntrebari("intrebari.txt");
+        toateCapitolele = citestePovesti("poveste.txt");
+
+        ///definirea cerintelor minime pt a rula aplicatia
+        const size_t min_intrebari = 8;
+        const size_t min_capitole = 4;
+
+        ///verificam daca s-au incarcat suficiente date; daca nu, aruncam o exceptie
+        if (toateIntrebarile.size() < min_intrebari || toateCapitolele.size() < min_capitole)
+            throw EroareDateInsuficiente(min_intrebari, toateIntrebarile.size());
+
+    }
+    ///catch-ul general pentru exceptii
+    catch (const AplicatieExceptie& e) {
+        std::cout << "\n    EROARE LA INCARCAREA DATELOR    \n";
+        std::cout << "DETALII: " << e.what() << "\n";
+        std::cout << "Aplicatia nu poate continua. Va rugam verificati fisierele de intrare.\n";
+        return 1;
+    }
+    ///catch-ul de backup pentru orice alta eroare
+    catch (const std::exception& e) {
+        std::cout << "\n    EROARE NECUNOSCUTA APLICATIE \n";
+        std::cout << "DETALII: " << e.what() << "\n";
         return 1;
     }
 
-    //impartirea datelor in nivele: 2 intrebari pentru un capitol din poveste
-    Nivel n1("Nivelul 1",
-             {toateIntrebarile[0], toateIntrebarile[1]},
-             toateCapitolele[0]);
-    Nivel n2("Nivelul 2",
-             {toateIntrebarile[2], toateIntrebarile[3]},
-             toateCapitolele[1]);
-    Nivel n3("Nivelul 3",
-             {toateIntrebarile[4], toateIntrebarile[5]},
-             toateCapitolele[2]);
-    Nivel n4("Nivelul 4",
-             {toateIntrebarile[6], toateIntrebarile[7]},
-             toateCapitolele[3]);
+    ///initializare si rulare
+    std::vector<Nivel> lista_nivele;
 
-    std::vector<Nivel> lista_nivele = {n1, n2, n3, n4};
+    ///crearea de nivele
+        ///nivelul 1
+    std::vector<std::unique_ptr<Intrebare>> intrebari_n1;
+    intrebari_n1.push_back(std::move(toateIntrebarile[0]));
+    intrebari_n1.push_back(std::move(toateIntrebarile[1]));
+    lista_nivele.emplace_back("Nivelul 1", std::move(intrebari_n1), toateCapitolele[0]);
+
+        ///nivelul 2
+    std::vector<std::unique_ptr<Intrebare>> intrebari_n2;
+    intrebari_n2.push_back(std::move(toateIntrebarile[2]));
+    intrebari_n2.push_back(std::move(toateIntrebarile[3]));
+    lista_nivele.emplace_back("Nivelul 2", std::move(intrebari_n2), toateCapitolele[1]);
+
+        ///nivelul 3
+    std::vector<std::unique_ptr<Intrebare>> intrebari_n3;
+    intrebari_n3.push_back(std::move(toateIntrebarile[4]));
+    intrebari_n3.push_back(std::move(toateIntrebarile[5]));
+    lista_nivele.emplace_back("Nivelul 3", std::move(intrebari_n3), toateCapitolele[2]);
+
+        ///nivelul 4
+    std::vector<std::unique_ptr<Intrebare>> intrebari_n4;
+    intrebari_n4.push_back(std::move(toateIntrebarile[6]));
+    intrebari_n4.push_back(std::move(toateIntrebarile[7]));
+    lista_nivele.emplace_back("Nivelul 4", std::move(intrebari_n4), toateCapitolele[3]);
 
 
-    //verificare constructor/destructor/operator
+    ///verificare constructor/destructor/operator
     std::cout << "\n Teste operator si constructor \n";
-    Nivel n1_copie = n1; //constr de copiere
-    Nivel n2_copie;
-    n2_copie = n2; //op de atribuire
+
+    Nivel n_test_copie = lista_nivele[2];
+    Nivel n_test_atribuire;
+    n_test_atribuire = n_test_copie;
     std::cout << "\n";
 
 
-    //rulare aplicatie quiz
+    ///rulare aplicatie
     std::string numeUtilizator;
     std::cout << "Introdu un nume de utilizator: ";
-    std::cin >> numeUtilizator;
-    Quiz aplicator(lista_nivele, numeUtilizator);
-    aplicator.aplicatie();
+    if (!(std::cin >> numeUtilizator)) {
+        numeUtilizator = "Anonim";
+    }
 
+    ///mutarea vectorului de nivele în Quiz
+    Quiz aplicator(std::move(lista_nivele), numeUtilizator);
+    aplicator.aplicatie();
     std::cout << aplicator;
 
 
-    (void)toateIntrebarile[0].getText();
-    (void)toateIntrebarile[0].getNumarOptiuni();
-    (void)toateCapitolele[0].getTitlu();
-    (void)toateCapitolele[0].esteDeblocat();
-    (void)lista_nivele[0].getNumeNivel();
-    (void)toateIntrebarile[0].getraspunsCorectIndex();
+    ///testare
+    std::cout << "\n Testare Getters si Polimorfism \n";
+    if (aplicator.get_nivele().size() > 0) {
+        Intrebare* prima_intrebare = aplicator.get_nivele()[0].getIntrebare(0);
+
+        if (prima_intrebare) {
+            std::cout << "Titlu Intrebare: " << prima_intrebare->getText() << "\n";
+            std::cout << "Punctaj: " << prima_intrebare->calculeazaPunctaj() << "\n";
+
+            ///verificare dynamic_cast
+            IntrebareGrila* grila_ptr = dynamic_cast<IntrebareGrila*>(prima_intrebare);
+            if (grila_ptr) {
+                 std::cout << "Numar Optiuni (Grila): " << grila_ptr->getNumarOptiuni() << "\n";
+            }
+        }
+
+        std::cout << "Titlu Capitol (Nivel 1): " << aplicator.get_nivele()[0].getCapitol()->getTitlu() << "\n";
+    }
 
     return 0;
 }

@@ -1,39 +1,40 @@
 8
-Care este capitala Canadei?
-3
-Toronto;Vancouver;Ottawa;Montreal
-
-
-Cate laturi are un trapez?
+G
+Care este capitala Frantei?
 2
-Trei;Patru;Cinci
+Roma;Paris;Berlin;Madrid
 
-
-Ce substanta da culoarea rosie sangelui?
+A
+Lumina se propaga in vid.
 1
-Hemoglobina;Clorofila;Melanina;Insulina
+1
 
+L
+Cine a scris "Ion"?
+1
+Liviu Rebreanu
 
-Cine a pictat Mona Lisa?
-4
-Van Gogh;Picasso;Michelangelo;Leonardo da Vinci
+G
+Câți biți are un octet (byte)?
+1
+8;16;32;64
 
-
-Cine a fost primul om care a calcat pe Luna?
+A
+2+2=5.
 2
-Yuri Gagarin;Neil Armstrong;Buzz Aldrin;Alan Shepard
+2
 
-
-Care este moneda oficiala a Japoniei?
-3
-Won;Euro;Yen;Dolar
-
-
-Care este singurul continent fara desert?
-4
-Asia;Africa;Europa;America de Nord
-
-
-Din ce metal este facuta majoritatea firului de creion?
+L
+Care e rezultatul 5 * (2 + 3)?
 1
-Grafit;Plumb;Fier;Argint
+25;10;15;30
+
+G
+În ce limbaj este scris acest program?
+3
+Java;Python;C++;JavaScript
+
+A
+Un destructor elibereaza resursele.
+1
+1
