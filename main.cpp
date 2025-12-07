@@ -103,9 +103,9 @@ int main() {
 
 
     ///testare
-    /*std::cout << "\n Testare Getters si Polimorfism \n";
+    std::cout << "\n Testare Getters si Polimorfism \n";
     if (quiz.get_nivele().size() > 0) {
-        const Intrebare& prima_intrebare = quiz.get_nivele()[0].getIntrebare(0);
+        /*const Intrebare& prima_intrebare = quiz.get_nivele()[0].getIntrebare(0);
         std::cout << "Titlu Intrebare: " << prima_intrebare.getText() << "\n";
         std::cout << "Punctaj: " << prima_intrebare.calculeazaPunctaj() << "\n";
 
@@ -114,7 +114,8 @@ int main() {
         if (grila_ptr)
                  std::cout << "Numar Optiuni (Grila): " << grila_ptr->getNumarOptiuni() << "\n";
         std::cout << "Titlu Capitol (Nivel 1): " << quiz.get_nivele()[0].getCapitol().getTitlu() << "\n";
-    }*/
+        */
+    }
 
     return 0;
 }
