@@ -65,7 +65,7 @@ std::vector<CapitolPoveste> citestePovesti(const std::string& numeFisier) {
             continut_total += linie + "\n";
 
         ///cream si adaugam noul obiect CapitolPoveste
-        capitole.emplace_back(titlu, continut_total);
+        capitole.push_back(CapitolPoveste(titlu, continut_total));
     }
     return capitole;
 }
