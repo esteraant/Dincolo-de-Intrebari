@@ -20,8 +20,8 @@ public:
     explicit ProfilUtilizator(const std::string& nume) : numeProfil(nume) {}
 
 
-    ProfilUtilizator(const ProfilUtilizator& other) = default;
-    ProfilUtilizator& operator=(const ProfilUtilizator& other) = default;
+    ProfilUtilizator(const ProfilUtilizator& other) = delete;
+    ProfilUtilizator& operator=(const ProfilUtilizator& other) = delete;
 
     //mutarea explicita
     ProfilUtilizator(ProfilUtilizator&& other) noexcept;
