@@ -25,7 +25,7 @@ public:
     std::unique_ptr<Intrebare> clone() const override;
     void afiseazaDetalii(std::ostream& os) const override;
 
-    size_t getNumarOptiuni() const;
+    //size_t getNumarOptiuni() const;
 };
 
 #endif

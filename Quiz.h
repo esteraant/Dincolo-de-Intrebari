@@ -26,8 +26,8 @@ public:
     Quiz& operator=(const Quiz& qa) = delete;
 
     ///permiterea mutarii
-    Quiz(Quiz&& qa) = default;
-    Quiz& operator=(Quiz&& qa) = default;
+    Quiz(Quiz&& qa);
+    Quiz& operator=(Quiz&& qa);
 
     void aplicatie();
 

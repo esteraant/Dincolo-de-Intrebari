@@ -9,6 +9,35 @@ Quiz::Quiz(const std::string& nume, std::vector<Nivel> niv)
           scorTotalGlobal{0},
           statistici{} {
 }
+
+//constructor de mutare
+Quiz::Quiz(Quiz&& qa)
+    //muta membrii in noul obiect
+    : numeUtilizator{std::move(qa.numeUtilizator)},
+      nivele{std::move(qa.nivele)},
+      scorTotalGlobal{qa.scorTotalGlobal}, //copiaza (size_t)
+      statistici{std::move(qa.statistici)}
+{
+    //reseteaza starea obiectului sursa
+    qa.scorTotalGlobal = 0;
+}
+
+///Operator de atribuire prin mutare - evitam deep copy
+Quiz& Quiz::operator=(Quiz&& qa) {
+    if (this != &qa) {
+        //muta membrii mari
+        numeUtilizator = std::move(qa.numeUtilizator);
+        nivele = std::move(qa.nivele);
+        statistici = std::move(qa.statistici);
+
+        //copiaza membrii mici
+        scorTotalGlobal = qa.scorTotalGlobal;
+        qa.scorTotalGlobal = 0;
+    }
+    return *this;
+}
+
+
 void Quiz::aplicatie() {
     std::cout << "\nBun venit, " << numeUtilizator << "!\n";
     size_t i = 0;

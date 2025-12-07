@@ -38,6 +38,7 @@ void IntrebareMultipla::afiseazaDetalii(std::ostream& os) const {
     os << "  (ATENTIE! Exista mai multe variante corecte!)\n";
 }
 
-size_t IntrebareMultipla::getNumarOptiuni() const {
+/*size_t IntrebareMultipla::getNumarOptiuni() const {
     return raspunsuriPosibile.size();
 }
+*/
