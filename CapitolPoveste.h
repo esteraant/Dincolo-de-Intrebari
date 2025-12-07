@@ -11,11 +11,11 @@ private:
     bool deblocat;
 
 public:
-    CapitolPoveste(const std::string& titlu, const std::string& continut) : deblocat{false} ///construtor de init
+    /*CapitolPoveste(const std::string& titlu, const std::string& continut) : deblocat{false} ///construtor de init
     {
         this->titlu = titlu;
         this->continut = continut;
-    }
+    }*/
 
     CapitolPoveste() : deblocat{false} {} ///constructor default
     ~CapitolPoveste() = default; ///destructor

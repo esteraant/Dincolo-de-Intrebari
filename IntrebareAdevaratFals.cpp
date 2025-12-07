@@ -23,7 +23,7 @@ int IntrebareAdevaratFals::calculeazaPunctaj() const {
 \
 ///constructor virtual (Clone)
 std::unique_ptr<Intrebare> IntrebareAdevaratFals::clone() const {
-    return std::unique_ptr<Intrebare>(new IntrebareAdevaratFals(*this));
+    return std::make_unique<IntrebareAdevaratFals>(*this);
 }
 
 void IntrebareAdevaratFals::afiseazaDetalii(std::ostream& os) const {

@@ -58,8 +58,7 @@ int IntrebareRaspunsLiber::calculeazaPunctaj() const {
 
 ///constructor virtual (Clone)
 std::unique_ptr<Intrebare> IntrebareRaspunsLiber::clone() const {
-    IntrebareRaspunsLiber* copie_raw_ptr = new IntrebareRaspunsLiber(*this);
-    return std::unique_ptr<Intrebare>(copie_raw_ptr);
+    return std::make_unique<IntrebareRaspunsLiber>(*this);
 }
 
 void IntrebareRaspunsLiber::afiseazaDetalii(std::ostream& os) const {

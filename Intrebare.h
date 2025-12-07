@@ -21,7 +21,7 @@ public:
 
     ///constructor default
     Intrebare() : raspunsCorect{-1} {}
-    virtual ~Intrebare();
+    virtual ~Intrebare() = default;
 
     virtual bool verificaRaspuns(int raspuns_utilizator) const {
         return false;

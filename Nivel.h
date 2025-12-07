@@ -33,8 +33,8 @@ public:
     Nivel& operator=(const Nivel& nivel);
 
     ///operator de mutare - transfera proprietatea vectorului de intrebari
-    Nivel(Nivel&& nivel) = default;
-    Nivel& operator=(Nivel&& nivel) = default;
+    //Nivel(Nivel&& nivel) = default;
+    //Nivel& operator=(Nivel&& nivel) = default;
 
     ///destructor
     ~Nivel() = default;

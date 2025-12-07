@@ -15,7 +15,9 @@ Nivel::Nivel(const std::string& nume, std::vector<std::unique_ptr<Intrebare>> in
 
 ///constructor de copiere
 Nivel::Nivel(const Nivel& nivel)
-    : numeNivel{nivel.numeNivel}, poveste{nivel.poveste}, nivelPromovat{nivel.nivelPromovat}
+    : numeNivel{nivel.numeNivel},
+        poveste{nivel.poveste},
+        nivelPromovat{nivel.nivelPromovat}
 {
     ///std::cout << "Nivel " << nivel.numeNivel << " copiat.\n";
     for (const std::unique_ptr<Intrebare>& intrebare_ptr : nivel.intrebari) {
@@ -88,7 +90,6 @@ bool Nivel::ruleaza_test(size_t& scorGlobal, StatisticiJoc& stats) {
 
                     auto timpFinal = std::chrono::steady_clock::now();
                     auto durata = std::chrono::duration_cast<std::chrono::milliseconds>(timpFinal - timpStart).count();
-                    int bonus = 0;
                     if (durata < 5000) {  ///mai putin de 5s
                         scorGlobal += 5;
                         std::cout << "BONUS VITEZA! + 5 puncte.\n";

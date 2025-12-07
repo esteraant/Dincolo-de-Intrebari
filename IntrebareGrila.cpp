@@ -20,7 +20,7 @@ bool IntrebareGrila::verificaRaspunsText(const std::string& raspuns_utilizator) 
 
 ///constructor virtual
 std::unique_ptr<Intrebare> IntrebareGrila::clone() const {
-    return std::unique_ptr<Intrebare>(new IntrebareGrila(*this));
+    return std::make_unique<IntrebareGrila>(*this);
 }
 
 

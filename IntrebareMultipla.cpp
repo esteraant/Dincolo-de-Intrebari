@@ -27,7 +27,7 @@ int IntrebareMultipla::calculeazaPunctaj() const {
 
 ///constructor virutal
 std::unique_ptr<Intrebare> IntrebareMultipla::clone() const {
-    return std::unique_ptr<Intrebare>(new IntrebareMultipla(*this));
+    return std::make_unique<IntrebareMultipla>(*this);
 }
 
 void IntrebareMultipla::afiseazaDetalii(std::ostream& os) const {

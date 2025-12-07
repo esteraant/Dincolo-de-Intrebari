@@ -12,9 +12,9 @@ Intrebare::Intrebare(const std::string& t, int rC)
 }
 
 ///destructor virtual
-Intrebare::~Intrebare() {
+/*Intrebare::~Intrebare() {
     Intrebare::nr_intrebari_totale--;
-}
+}*/
 
 const std::string& Intrebare::getText() const { ///getter pt text
     return text;
