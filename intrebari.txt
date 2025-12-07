@@ -25,8 +25,8 @@ A
 2
 
 L
-Care e rezultatul 5 * (2 + 3)?
-25
+In ce luna a anului sarbatorim Craciunul?
+decembrie;dec
 1
 
 G

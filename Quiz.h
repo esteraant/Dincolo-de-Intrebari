@@ -4,21 +4,23 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <chrono>
 #include "Nivel.h"
+#include "StatisticiJoc.h"
 
 class Quiz {
 private:
     std::string numeUtilizator;
     std::vector<Nivel> nivele;
     size_t scorTotalGlobal = 0;
+    size_t comboCurent = 0;
+    std::chrono::steady_clock::time_point timpStartIntrebare; ///pentru cronometrare
+    StatisticiJoc statistici;
 public:
     //const std::vector<Nivel>& get_nivele() const {
     //   return nivele;
     //}
-
-    ///constructor de init
-    Quiz(const std::string& nume, std::vector<Nivel> nivele_);
-
+    Quiz(const std::string& nume, std::vector<Nivel> nivele_); ///constructor de init
     ///dezactivarea copierii pt a evita erori la Nivel
     Quiz(const Quiz& qa) = delete;
     Quiz& operator=(const Quiz& qa) = delete;

@@ -2,6 +2,7 @@
 #include <utility>
 #include <functional>
 #include <stdexcept>
+#include <chrono>
 
 ///constructor de initializare
 Nivel::Nivel(const std::string& nume, std::vector<std::unique_ptr<Intrebare>> intrebari_, const CapitolPoveste& poveste_)
@@ -44,19 +45,18 @@ void Nivel::afiseaza_vieti(int count, size_t scor) const { ///functie pt afisare
 
     std::cout << "  Vieti Ramase:   ";
 
-    for (int v = 0; v < 5; v++)
+    for(int v = 0; v < 5; v++)
         if (v < count)
             std::cout << "# ";
         else
             std::cout << "- ";
 
     std::cout << "\n";
-
     std::cout << "  Scorul Curent:      " << scor << "\n";
 };
 
 
-bool Nivel::ruleaza_test(size_t& scorGlobal) {
+bool Nivel::ruleaza_test(size_t& scorGlobal, StatisticiJoc& stats) {
     size_t raspunsuri_corecte = 0;
     int vieti_ramase = 5;
 
@@ -71,6 +71,8 @@ bool Nivel::ruleaza_test(size_t& scorGlobal) {
         IntrebareRaspunsLiber* liber_ptr = dynamic_cast<IntrebareRaspunsLiber*>(intrebare);
 
         while (!corect && vieti_ramase > 0) {
+            auto timpStart = std::chrono::steady_clock::now();
+
             afiseaza_vieti(vieti_ramase, scorGlobal);
             std::cout << "\n" << *intrebare;
 
@@ -83,10 +85,20 @@ bool Nivel::ruleaza_test(size_t& scorGlobal) {
                 ///std:ws ignora spatiile albe de la inceput si citim toata linia
 
                 if (intrebare->verificaRaspunsText(raspuns_utilizator_str)) {
+
+                    auto timpFinal = std::chrono::steady_clock::now();
+                    auto durata = std::chrono::duration_cast<std::chrono::milliseconds>(timpFinal - timpStart).count();
+                    int bonus = 0;
+                    if (durata < 5000) {  ///mai putin de 5s
+                        scorGlobal += 5;
+                        std::cout << "BONUS VITEZA! + 5 puncte.\n";
+                    }
+
                     std::cout << "Raspuns CORECT! Ai castigat " << intrebare->calculeazaPunctaj() << " puncte.\n";
                     scorGlobal += intrebare->calculeazaPunctaj();
                     raspunsuri_corecte++;
                     corect = true;
+                    stats.adaugaRaspuns(true);
                 } else {
                     vieti_ramase--;
                     if(scorGlobal >= 1)
@@ -99,6 +111,7 @@ bool Nivel::ruleaza_test(size_t& scorGlobal) {
                         return false; ///inchidem jocul
                     }
                     std::cout << "Incearca din nou.\n";
+                    stats.adaugaRaspuns(false);
                 }
 
             } else {
@@ -116,6 +129,7 @@ bool Nivel::ruleaza_test(size_t& scorGlobal) {
                 if (intrebare->verificaRaspuns(raspuns_utilizator_int)) {
                     std::cout << "Raspuns CORECT! Ai castigat " << intrebare->calculeazaPunctaj() << " puncte.\n";
                     scorGlobal += intrebare->calculeazaPunctaj();
+                    stats.adaugaRaspuns(true);
                     raspunsuri_corecte++;
                     corect = true;
                 } else {
@@ -129,6 +143,7 @@ bool Nivel::ruleaza_test(size_t& scorGlobal) {
                         return false; ///inchidem jocul
                     }
                     std::cout << "Incearca din nou.\n";
+                    stats.adaugaRaspuns(false);
                 }
                 ///curatam buffer-ul
                 std::cin.clear();

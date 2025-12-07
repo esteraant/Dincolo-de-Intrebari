@@ -82,12 +82,12 @@ int main() {
 
     ///verificare constructor/destructor/operator
     ///std::cout << "\n Teste operator si constructor \n";
-
+/*
     Nivel n_test_copie = lista_nivele[2];
     Nivel n_test_atribuire;
     n_test_atribuire = n_test_copie;
     ///std::cout << "\n";
-
+*/
 
     ///rulare aplicatie
     std::string numeUtilizator;

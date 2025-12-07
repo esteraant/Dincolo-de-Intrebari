@@ -9,6 +9,7 @@
 #include "Intrebare.h"
 #include "CapitolPoveste.h"
 #include "IntrebareRaspunsLiber.h"
+#include "StatisticiJoc.h"
 
 class Nivel {
 private:
@@ -38,7 +39,7 @@ public:
     ///destructor
     ~Nivel() = default;
 
-    bool ruleaza_test(size_t& scorGlobal);
+    bool ruleaza_test(size_t& scorGlobal, StatisticiJoc& stats);
 
     ///getter pt numeNivel
     const std::string& getNumeNivel() const;

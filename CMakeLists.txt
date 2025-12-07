@@ -49,7 +49,17 @@ include(cmake/CopyHelper.cmake)
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${MAIN_EXECUTABLE_NAME}
-    main.cpp
+        main.cpp
+        Quiz.cpp
+        Nivel.cpp
+        StatisticiJoc.cpp
+        CapitolPoveste.cpp
+        Intrebare.cpp
+        IntrebareAdevaratFals.cpp
+        IntrebareGrila.cpp
+        IntrebareMultipla.cpp
+        IntrebareRaspunsLiber.cpp
+        utils.cpp
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

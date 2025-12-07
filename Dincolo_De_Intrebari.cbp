@@ -64,6 +64,10 @@
 		<Unit filename="Quiz.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="StatisticiJoc.cpp" />
+		<Unit filename="StatisticiJoc.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="aplicatie_exceptii.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
