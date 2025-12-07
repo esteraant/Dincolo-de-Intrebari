@@ -24,13 +24,13 @@ public:
         this->deblocat = true;
     }
 
-    bool esteDeblocat() const { ///getter pt statusul deblocat
+    /*bool esteDeblocat() const { ///getter pt statusul deblocat
         return deblocat;
-    }
+    }*/
 
-    const std::string& getTitlu() const { ///getter pt titlu
+    /*const std::string& getTitlu() const { ///getter pt titlu
         return titlu;
-    }
+    }*/
 
     ///operator<<
     friend std::ostream& operator<<(std::ostream& os, const CapitolPoveste& cap) {

@@ -32,7 +32,7 @@ void IntrebareGrila::afiseazaDetalii(std::ostream& os) const {
     os << "\n";
 }
 
-size_t IntrebareGrila::getNumarOptiuni() const { ///getter nr de optiuni
+/*size_t IntrebareGrila::getNumarOptiuni() const { ///getter nr de optiuni
     return raspunsuriPosibile.size();
-}
+}*/
 

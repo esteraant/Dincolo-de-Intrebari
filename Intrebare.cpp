@@ -16,10 +16,10 @@ Intrebare::Intrebare(const std::string& t, int rC)
     Intrebare::nr_intrebari_totale--;
 }*/
 
-const std::string& Intrebare::getText() const { ///getter pt text
+/*const std::string& Intrebare::getText() const { ///getter pt text
     return text;
 }
 
 int Intrebare::getraspunsCorectIndex() const { ///getter pentru raspuns corect
     return raspunsCorect;
-}
+}*/

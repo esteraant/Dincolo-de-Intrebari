@@ -167,28 +167,28 @@ bool Nivel::ruleaza_test(size_t& scorGlobal, StatisticiJoc& stats) {
 
 
 ///getter pt numeNivel
-const std::string& Nivel::getNumeNivel() const {
+/*const std::string& Nivel::getNumeNivel() const {
     return numeNivel;
-}
+}*/
 
 bool Nivel::estePromovat() const {
     return nivelPromovat;
 }
 
 ///getter pentru a accesa un obiect Intrebare
-const Intrebare& Nivel::getIntrebare(size_t i) const {
+/*const Intrebare& Nivel::getIntrebare(size_t i) const {
     ///verificam daca i este valid
     if (i >= intrebari.size()) {
         throw std::out_of_range("Index intrebare invalid.");
     }
     return *intrebari[i].get(); ///returnare referinta la ob intrebare
-}
+}*/
 
 ///getter pentru a accesa capitolul
-const CapitolPoveste& Nivel::getCapitol() const {
+/*const CapitolPoveste& Nivel::getCapitol() const {
     return poveste;
 }
-
+*/
 
 ///operator<<
 std::ostream& operator<<(std::ostream& os, const Nivel& niv) {

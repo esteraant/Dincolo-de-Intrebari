@@ -42,12 +42,12 @@ public:
     bool ruleaza_test(size_t& scorGlobal, StatisticiJoc& stats);
 
     ///getter pt numeNivel
-    const std::string& getNumeNivel() const;
+    //const std::string& getNumeNivel() const;
 
     bool estePromovat() const;
 
-    const Intrebare& getIntrebare(size_t i) const;
-    const CapitolPoveste& getCapitol() const;
+    //const Intrebare& getIntrebare(size_t i) const;
+    //const CapitolPoveste& getCapitol() const;
 
     ///operator<<
     friend std::ostream& operator<<(std::ostream& os, const Nivel& niv);

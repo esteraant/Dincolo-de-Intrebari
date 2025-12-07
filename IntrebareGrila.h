@@ -20,7 +20,7 @@ public:
     void afiseazaDetalii(std::ostream& os) const override;
     virtual bool verificaRaspunsText(const std::string& raspuns_utilizator) const override;
     bool verificaRaspuns(int raspuns_utilizator) const override;
-    size_t getNumarOptiuni() const; ///getter nr de optiuni
+    //size_t getNumarOptiuni() const; ///getter nr de optiuni
 };
 
 #endif

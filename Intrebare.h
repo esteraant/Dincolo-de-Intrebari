@@ -34,9 +34,9 @@ public:
     virtual std::unique_ptr<Intrebare> clone() const = 0;
     virtual void afiseazaDetalii(std::ostream& os) const = 0;
 
-    static size_t getContorIntrebari() {
+    /*static size_t getContorIntrebari() {
         return nr_intrebari_totale;
-    }
+    }*/
 
     ///interfata non-virtuala
     void afiseaza(std::ostream& os) const {
@@ -45,8 +45,8 @@ public:
     }
 
     ///gettere comune
-    const std::string& getText() const;
-    int getraspunsCorectIndex() const;
+    /*const std::string& getText() const;
+    int getraspunsCorectIndex() const;*/
 
     friend std::ostream& operator<<(std::ostream& os, const Intrebare& intrebare) {
         intrebare.afiseaza(os);
