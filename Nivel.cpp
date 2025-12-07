@@ -1,5 +1,7 @@
 #include "Nivel.h"
 #include <utility>
+#include <functional>
+#include <stdexcept>
 
 ///constructor de initializare
 Nivel::Nivel(const std::string& nume, std::vector<std::unique_ptr<Intrebare>> intrebari_, const CapitolPoveste& poveste_)
@@ -37,10 +39,26 @@ Nivel& Nivel::operator=(const Nivel& nivel) {
     return *this;
 }
 
-void Nivel::ruleaza_test() {
-    int raspuns_utilizator;
-    size_t scor_total = 0;
+
+void Nivel::afiseaza_vieti(int count, size_t scor) const { ///functie pt afisarea inimilor
+
+    std::cout << "  Vieti Ramase:   ";
+
+    for (int v = 0; v < 5; v++)
+        if (v < count)
+            std::cout << "# ";
+        else
+            std::cout << "- ";
+
+    std::cout << "\n";
+
+    std::cout << "  Scorul Curent:      " << scor << "\n";
+};
+
+
+bool Nivel::ruleaza_test(size_t& scorGlobal) {
     size_t raspunsuri_corecte = 0;
+    int vieti_ramase = 5;
 
     std::cout << "\n " << numeNivel << " \n";
     std::cout << "Raspunde corect la fiecare intrebare pentru a continua!\n";
@@ -52,7 +70,8 @@ void Nivel::ruleaza_test() {
         ///idenfiticam tipul de intrebare - daca e raspuns liber
         IntrebareRaspunsLiber* liber_ptr = dynamic_cast<IntrebareRaspunsLiber*>(intrebare);
 
-        while (!corect) {
+        while (!corect && vieti_ramase > 0) {
+            afiseaza_vieti(vieti_ramase, scorGlobal);
             std::cout << "\n" << *intrebare;
 
             if (liber_ptr) {
@@ -65,11 +84,20 @@ void Nivel::ruleaza_test() {
 
                 if (intrebare->verificaRaspunsText(raspuns_utilizator_str)) {
                     std::cout << "Raspuns CORECT! Ai castigat " << intrebare->calculeazaPunctaj() << " puncte.\n";
-                    scor_total += intrebare->calculeazaPunctaj();
+                    scorGlobal += intrebare->calculeazaPunctaj();
                     raspunsuri_corecte++;
                     corect = true;
                 } else {
-                    std::cout << "\n Raspuns GRESIT! \n";
+                    vieti_ramase--;
+                    if(scorGlobal >= 1)
+                        scorGlobal--;
+                    else scorGlobal = 0; ///scorul ramane >=0 si scadem 1 dc e gresit rasp
+
+                    std::cout << "\n Raspuns GRESIT! Ai pierdut 1 punct si 1 viata.\n";
+                    if (vieti_ramase == 0) {
+                        std::cout << " JOC TERMINAT! Ai ramas fara vieti! \n"    ;
+                        return false; ///inchidem jocul
+                    }
                     std::cout << "Incearca din nou.\n";
                 }
 
@@ -87,17 +115,27 @@ void Nivel::ruleaza_test() {
 
                 if (intrebare->verificaRaspuns(raspuns_utilizator_int)) {
                     std::cout << "Raspuns CORECT! Ai castigat " << intrebare->calculeazaPunctaj() << " puncte.\n";
-                    scor_total += intrebare->calculeazaPunctaj();
+                    scorGlobal += intrebare->calculeazaPunctaj();
                     raspunsuri_corecte++;
                     corect = true;
                 } else {
-                    std::cout << "\n Raspuns GRESIT! \n";
+                    vieti_ramase--; ///pierde o viata
+                    if(scorGlobal >= 1)
+                        scorGlobal--;
+                    else scorGlobal = 0; ///scorul ramane >=0 si scadem 1 dc e gresit rasp
+                    std::cout << "\n Raspuns GRESIT! Ai pierdut 1 punct si 1 viata.\n";
+                    if (vieti_ramase == 0) {
+                        std::cout << " JOC TERMINAT! Ai ramas fara vieti! \n"    ;
+                        return false; ///inchidem jocul
+                    }
                     std::cout << "Incearca din nou.\n";
                 }
                 ///curatam buffer-ul
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             }
+            if(vieti_ramase == 0)
+                return false;
         }
     }
 
@@ -105,9 +143,10 @@ void Nivel::ruleaza_test() {
     if (raspunsuri_corecte == intrebari.size()) {
         this->poveste.deblocheaza();
         this->nivelPromovat = true;
-        std::cout << "\n FELICITARI! Capitol deblocat! Scorul tau total pentru acest nivel este: " << scor_total << ".\n";
+        std::cout << "\n FELICITARI! Scorul tau total este: " << scorGlobal << ".\n";
         std::cout << this->poveste;
     }
+    return true;
 }
 
 
@@ -120,15 +159,18 @@ bool Nivel::estePromovat() const {
     return nivelPromovat;
 }
 
-Intrebare* Nivel::getIntrebare(size_t index) const {
-    if (index < intrebari.size()) {
-        return intrebari[index].get();
+///getter pentru a accesa un obiect Intrebare
+const Intrebare& Nivel::getIntrebare(size_t i) const {
+    ///verificam daca i este valid
+    if (i >= intrebari.size()) {
+        throw std::out_of_range("Index intrebare invalid.");
     }
-    return nullptr;
+    return *intrebari[i].get(); ///returnare referinta la ob intrebare
 }
 
-CapitolPoveste* Nivel::getCapitol() const {
-    return (CapitolPoveste*)&poveste;
+///getter pentru a accesa capitolul
+const CapitolPoveste& Nivel::getCapitol() const {
+    return poveste;
 }
 
 
@@ -136,8 +178,8 @@ CapitolPoveste* Nivel::getCapitol() const {
 std::ostream& operator<<(std::ostream& os, const Nivel& niv) {
     os << "\n=== Nivel " << niv.numeNivel << " ===\n";
     os << "Status: ";
-    if (niv.nivelPromovat) os << "PROMOVAT";
-    else os << "NEPROMOVAT";
+    if (niv.nivelPromovat) os << "DEBLOCAT";
+    else os << "NEDEBLOCAT";
     os << "\n";
     os << "Intrebari: " << niv.intrebari.size() << "\n";
     os << niv.poveste;

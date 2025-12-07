@@ -8,15 +8,16 @@
 
 class Quiz {
 private:
-    std::vector<Nivel> nivele;
     std::string numeUtilizator;
-
+    std::vector<Nivel> nivele;
+    size_t scorTotalGlobal = 0;
 public:
-    const std::vector<Nivel>& get_nivele() const {
-        return nivele;
-    }
+    //const std::vector<Nivel>& get_nivele() const {
+    //   return nivele;
+    //}
+
     ///constructor de init
-    Quiz(std::vector<Nivel> niv, const std::string& nume);
+    Quiz(const std::string& nume, std::vector<Nivel> nivele_);
 
     ///dezactivarea copierii pt a evita erori la Nivel
     Quiz(const Quiz& qa) = delete;

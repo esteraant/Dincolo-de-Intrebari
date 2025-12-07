@@ -81,12 +81,12 @@ int main() {
 
 
     ///verificare constructor/destructor/operator
-    std::cout << "\n Teste operator si constructor \n";
+    ///std::cout << "\n Teste operator si constructor \n";
 
     Nivel n_test_copie = lista_nivele[2];
     Nivel n_test_atribuire;
     n_test_atribuire = n_test_copie;
-    std::cout << "\n";
+    ///std::cout << "\n";
 
 
     ///rulare aplicatie
@@ -97,29 +97,24 @@ int main() {
     }
 
     ///mutarea vectorului de nivele în Quiz
-    Quiz aplicator(std::move(lista_nivele), numeUtilizator);
-    aplicator.aplicatie();
-    std::cout << aplicator;
+    Quiz quiz(numeUtilizator, std::move(lista_nivele));
+    quiz.aplicatie();
+    std::cout << quiz;
 
 
     ///testare
-    std::cout << "\n Testare Getters si Polimorfism \n";
-    if (aplicator.get_nivele().size() > 0) {
-        Intrebare* prima_intrebare = aplicator.get_nivele()[0].getIntrebare(0);
+    /*std::cout << "\n Testare Getters si Polimorfism \n";
+    if (quiz.get_nivele().size() > 0) {
+        const Intrebare& prima_intrebare = quiz.get_nivele()[0].getIntrebare(0);
+        std::cout << "Titlu Intrebare: " << prima_intrebare.getText() << "\n";
+        std::cout << "Punctaj: " << prima_intrebare.calculeazaPunctaj() << "\n";
 
-        if (prima_intrebare) {
-            std::cout << "Titlu Intrebare: " << prima_intrebare->getText() << "\n";
-            std::cout << "Punctaj: " << prima_intrebare->calculeazaPunctaj() << "\n";
-
-            ///verificare dynamic_cast
-            IntrebareGrila* grila_ptr = dynamic_cast<IntrebareGrila*>(prima_intrebare);
-            if (grila_ptr) {
+        ///verificare dynamic_cast
+        IntrebareGrila* grila_ptr = dynamic_cast<IntrebareGrila*>(const_cast<Intrebare*>(&prima_intrebare));
+        if (grila_ptr)
                  std::cout << "Numar Optiuni (Grila): " << grila_ptr->getNumarOptiuni() << "\n";
-            }
-        }
-
-        std::cout << "Titlu Capitol (Nivel 1): " << aplicator.get_nivele()[0].getCapitol()->getTitlu() << "\n";
-    }
+        std::cout << "Titlu Capitol (Nivel 1): " << quiz.get_nivele()[0].getCapitol().getTitlu() << "\n";
+    }*/
 
     return 0;
 }

@@ -11,28 +11,28 @@ private:
     bool deblocat;
 
 public:
-    CapitolPoveste(const std::string& titlu, const std::string& continut) : deblocat{false} // construtor de init
+    CapitolPoveste(const std::string& titlu, const std::string& continut) : deblocat{false} ///construtor de init
     {
         this->titlu = titlu;
         this->continut = continut;
     }
 
-    CapitolPoveste() : deblocat{false} {} // constructor default
-    ~CapitolPoveste() = default; // destructor
+    CapitolPoveste() : deblocat{false} {} ///constructor default
+    ~CapitolPoveste() = default; ///destructor
 
     void deblocheaza() {
         this->deblocat = true;
     }
 
-    bool esteDeblocat() const { // getter pt statusul deblocat
+    bool esteDeblocat() const { ///getter pt statusul deblocat
         return deblocat;
     }
 
-    const std::string& getTitlu() const { // getter pt titlu
+    const std::string& getTitlu() const { ///getter pt titlu
         return titlu;
     }
 
-    // operator<<
+    ///operator<<
     friend std::ostream& operator<<(std::ostream& os, const CapitolPoveste& cap) {
         os << "~     " << cap.titlu << "     ~\n";
         if (cap.deblocat) {
@@ -45,4 +45,4 @@ public:
     }
 };
 
-#endif // CAPITOLPOVESTE_H
+#endif

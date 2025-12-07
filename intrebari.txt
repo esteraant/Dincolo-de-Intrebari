@@ -11,11 +11,11 @@ Lumina se propaga in vid.
 
 L
 Cine a scris "Ion"?
+Liviu Rebreanu;Rebreanu
 1
-Liviu Rebreanu
 
 G
-Câți biți are un octet (byte)?
+Cati biti are un octet (byte)?
 1
 8;16;32;64
 
@@ -26,11 +26,11 @@ A
 
 L
 Care e rezultatul 5 * (2 + 3)?
+25
 1
-25;10;15;30
 
 G
-În ce limbaj este scris acest program?
+In ce limbaj este scris acest program?
 3
 Java;Python;C++;JavaScript
 

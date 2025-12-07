@@ -20,7 +20,7 @@ bool IntrebareAdevaratFals::verificaRaspunsText(const std::string& raspuns_utili
 int IntrebareAdevaratFals::calculeazaPunctaj() const {
     return 1;
 }
-
+\
 ///constructor virtual (Clone)
 std::unique_ptr<Intrebare> IntrebareAdevaratFals::clone() const {
     return std::unique_ptr<Intrebare>(new IntrebareAdevaratFals(*this));

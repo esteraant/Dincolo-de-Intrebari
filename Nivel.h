@@ -16,6 +16,7 @@ private:
     std::vector<std::unique_ptr<Intrebare>> intrebari;
     CapitolPoveste poveste;
     bool nivelPromovat;
+    void afiseaza_vieti(int count, size_t scor) const;
 
 public:
     ///contructor de initializare
@@ -37,18 +38,15 @@ public:
     ///destructor
     ~Nivel() = default;
 
-    void ruleaza_test();
+    bool ruleaza_test(size_t& scorGlobal);
 
     ///getter pt numeNivel
     const std::string& getNumeNivel() const;
 
     bool estePromovat() const;
 
-    ///getter pentru a accesa un obiect Intrebare
-    Intrebare* getIntrebare(size_t index) const;
-
-    ///getter pentru a accesa capitolul
-    CapitolPoveste* getCapitol() const;
+    const Intrebare& getIntrebare(size_t i) const;
+    const CapitolPoveste& getCapitol() const;
 
     ///operator<<
     friend std::ostream& operator<<(std::ostream& os, const Nivel& niv);

@@ -3,9 +3,11 @@
 #include <utility>
 
 ///constructor de init
-Quiz::Quiz(std::vector<Nivel> niv, const std::string& nume) {
-    this->nivele = std::move(niv); ///mutam vectorul de niveluri
-    this->numeUtilizator = nume;
+Quiz::Quiz(const std::string& nume, std::vector<Nivel> niv)
+        : numeUtilizator{nume}, nivele{std::move(niv)}, scorTotalGlobal{0}
+{
+    //this->nivele = std::move(niv); ///mutam vectorul de niveluri
+    //this->numeUtilizator = nume;
 }
 
 void Quiz::aplicatie() {
@@ -16,7 +18,11 @@ void Quiz::aplicatie() {
     while (i < nivele.size()) {
         Nivel& nivel = nivele[i];
         if (!nivel.estePromovat()) {
-            nivel.ruleaza_test();
+            if (!nivel.ruleaza_test(scorTotalGlobal)) {
+                ///daca ruleaza_test returneaza false - nu a fost promovat din cauza vietilor
+                std::cout << "\nAplicatia se opreste. Ai ramas fara vieti in timpul jocului.\n";
+                return;
+            }
         }
 
         if (i == nivele.size() - 1) {
