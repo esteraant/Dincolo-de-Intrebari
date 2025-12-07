@@ -48,7 +48,7 @@ include(cmake/CopyHelper.cmake)
 ###############################################################################
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
-add_executable(${MAIN_EXECUTABLE_NAME}
+set(PROJECT_SOURCES
         main.cpp
         Quiz.cpp
         Nivel.cpp
@@ -61,6 +61,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         IntrebareRaspunsLiber.cpp
         utils.cpp
 )
+
+add_executable(${MAIN_EXECUTABLE_NAME} ${PROJECT_SOURCES})
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
 # NOTE: RUN_SANITIZERS is optional, if it's not present it will default to true
@@ -86,6 +88,6 @@ if(APPLE)
     install(FILES launcher.command DESTINATION ${DESTINATION_DIR})
 endif()
 
-copy_files(FILES tastatura.txt COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
+copy_files(FILES tastatura.txt intrebari.txt poveste.txt COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 # copy_files(FILES tastatura.txt config.json DIRECTORY images sounds COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 # copy_files(DIRECTORY images sounds COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
