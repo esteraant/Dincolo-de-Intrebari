@@ -19,6 +19,17 @@ public:
     //constructor de init
     explicit ProfilUtilizator(const std::string& nume) : numeProfil(nume) {}
 
+
+    ProfilUtilizator(const ProfilUtilizator& other) = default;
+    ProfilUtilizator& operator=(const ProfilUtilizator& other) = default;
+
+    //mutarea explicita
+    ProfilUtilizator(ProfilUtilizator&& other) noexcept;
+    ProfilUtilizator& operator=(ProfilUtilizator&& other) noexcept;
+
+    //destructor explicit
+    ~ProfilUtilizator();
+
     //metode de I/O
     void incarca();
     //metoda de logica

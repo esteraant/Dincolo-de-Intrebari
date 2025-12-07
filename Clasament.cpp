@@ -68,3 +68,18 @@ std::istream& operator>>(std::istream& is, Scor& s) {
     is >> s.valoare >> s.nume;
     return is;
 }
+//constr de mutare
+Clasament::Clasament(Clasament&& other) noexcept
+    : listaScoruri{std::move(other.listaScoruri)},
+      numeFisier{std::move(other.numeFisier)}
+{
+}
+
+//op de atribuie prin mutare
+Clasament& Clasament::operator=(Clasament&& other) noexcept {
+    if (this != &other) {
+        listaScoruri = std::move(other.listaScoruri);
+        numeFisier = std::move(other.numeFisier);
+    }
+    return *this;
+}

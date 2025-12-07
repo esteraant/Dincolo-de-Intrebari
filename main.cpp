@@ -109,9 +109,9 @@ int main() {
     profil.incarca(); //incarca highscore-ul anterior
 
     std::cout << "\n\n";
+    std::cout << "Profil încărcat pentru utilizatorul: " << profil.getNumeProfil() << "\n";
     std::cout << "Highscore-ul tau anterior este: "
               << profil.getHighscoreGlobal() << " puncte.\n\n";
-
     ///mutarea vectorului de nivele în Quiz
     Quiz quiz(numeUtilizator, std::move(lista_nivele));
     quiz.aplicatie();

@@ -23,13 +23,21 @@ struct Scor {
 class Clasament {
 private:
     std::vector<Scor> listaScoruri;
-    const std::string numeFisier = "clasament.txt";
+    std::string numeFisier = "clasament.txt";
 
     //functie de comparare statica pt std::sort
     static bool comparaScoruri(const Scor& a, const Scor& b);
 
 public:
     Clasament() = default;
+
+    Clasament(const Clasament& other) = default;
+    Clasament& operator=(const Clasament& other) = default;
+
+    Clasament(Clasament&& other) noexcept;
+    Clasament& operator=(Clasament&& other) noexcept;
+
+    ~Clasament() = default;
 
     //metode I/O
     void incarca();
