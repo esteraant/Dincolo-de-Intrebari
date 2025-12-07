@@ -48,9 +48,9 @@ bool IntrebareRaspunsLiber::verificaRaspunsText(const std::string& raspuns_utili
     return false;
 }
 
-bool IntrebareRaspunsLiber::verificaRaspuns(int raspuns_utilizator) const {
+/*bool IntrebareRaspunsLiber::verificaRaspuns(int raspuns_utilizator) const {
     return false;
-}
+}*/
 
 int IntrebareRaspunsLiber::calculeazaPunctaj() const {
     return 3;

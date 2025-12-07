@@ -14,6 +14,7 @@ bool IntrebareAdevaratFals::verificaRaspuns(int raspuns_utilizator) const {
 }
 
 bool IntrebareAdevaratFals::verificaRaspunsText(const std::string& raspuns_utilizator) const {
+    static_cast<void>(raspuns_utilizator);
     return false; ///intrebarea nu accepta raspunsuri de tip text
 }
 

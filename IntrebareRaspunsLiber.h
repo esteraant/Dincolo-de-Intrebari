@@ -12,7 +12,7 @@ private:
 public:
     IntrebareRaspunsLiber(const std::string& t, const std::vector<std::string>& rC);
 
-    bool verificaRaspuns(int raspuns_utilizator) const override;
+    //bool verificaRaspuns(int raspuns_utilizator) const override;
     bool verificaRaspunsText(const std::string& raspuns_utilizator) const override;
 
     int calculeazaPunctaj() const override;

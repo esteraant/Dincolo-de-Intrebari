@@ -14,6 +14,7 @@ int IntrebareGrila::calculeazaPunctaj() const {
     return 2; /// +2 puncte
 }
 bool IntrebareGrila::verificaRaspunsText(const std::string& raspuns_utilizator) const {
+    static_cast<void>(raspuns_utilizator);
     return false;
 }
 

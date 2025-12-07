@@ -24,6 +24,7 @@ public:
     virtual ~Intrebare() = default;
 
     virtual bool verificaRaspuns(int raspuns_utilizator) const {
+        static_cast<void>(raspuns_utilizator); //pt advertisment git
         return false;
     }
     virtual bool verificaRaspunsText(const std::string& raspuns_utilizator) const = 0;

@@ -11,7 +11,7 @@ protected:
 
 public:
     ///constructor
-    AplicatieExceptie(const std::string& msg) : mesaj{msg} {}
+    explicit AplicatieExceptie(const std::string& msg) : mesaj{msg} {}
 
     virtual const char* what() const noexcept override {
         return mesaj.c_str();
@@ -22,7 +22,7 @@ public:
 ///eroare citirea fisierelor
 class EroareFisierInexistent : public AplicatieExceptie {
 public:
-    EroareFisierInexistent(const std::string& nume_fisier)
+    explicit EroareFisierInexistent(const std::string& nume_fisier)
         : AplicatieExceptie("Eroare I/O: Fisierul '" + nume_fisier + "' nu a putut fi deschis/gasit.") {}
 };
 
@@ -30,7 +30,7 @@ public:
 ///eroare la date
 class EroareFormatDate : public AplicatieExceptie {
 public:
-    EroareFormatDate(const std::string& detalii)
+    explicit EroareFormatDate(const std::string& detalii)
         : AplicatieExceptie("Eroare Format Date: Datele din fisier sunt structurate gresit. Detalii: " + detalii) {}
 };
 

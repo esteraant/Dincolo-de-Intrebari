@@ -17,6 +17,7 @@ bool IntrebareMultipla::verificaRaspuns(int raspuns_utilizator) const  {
 }
 
 bool IntrebareMultipla::verificaRaspunsText(const std::string& raspuns_utilizator) const  {
+    static_cast<void>(raspuns_utilizator);
     return false;
 }
 

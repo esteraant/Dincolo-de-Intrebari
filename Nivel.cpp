@@ -70,7 +70,7 @@ bool Nivel::ruleaza_test(size_t& scorGlobal, StatisticiJoc& stats) {
         bool corect = false;
 
         ///idenfiticam tipul de intrebare - daca e raspuns liber
-        IntrebareRaspunsLiber* liber_ptr = dynamic_cast<IntrebareRaspunsLiber*>(intrebare);
+        const IntrebareRaspunsLiber* liber_ptr = dynamic_cast<IntrebareRaspunsLiber*>(intrebare);
 
         while (!corect && vieti_ramase > 0) {
             auto timpStart = std::chrono::steady_clock::now();
