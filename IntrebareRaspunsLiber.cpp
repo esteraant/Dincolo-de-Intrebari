@@ -64,3 +64,6 @@ std::unique_ptr<Intrebare> IntrebareRaspunsLiber::clone() const {
 void IntrebareRaspunsLiber::afiseazaDetalii(std::ostream& os) const {
     os << "  (Raspunde in scris)\n";
 }
+void IntrebareRaspunsLiber::afiseazaTipIntrebare() const {
+    std::cout << "Tip: Raspuns Liber.\n";
+}

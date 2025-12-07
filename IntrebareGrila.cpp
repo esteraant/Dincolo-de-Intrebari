@@ -32,6 +32,9 @@ void IntrebareGrila::afiseazaDetalii(std::ostream& os) const {
     os << "\n";
 }
 
+void IntrebareGrila::afiseazaTipIntrebare() const {
+    std::cout << "Tip: Grila.\n";
+}
 /*size_t IntrebareGrila::getNumarOptiuni() const { ///getter nr de optiuni
     return raspunsuriPosibile.size();
 }*/

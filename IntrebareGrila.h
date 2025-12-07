@@ -21,6 +21,7 @@ public:
     virtual bool verificaRaspunsText(const std::string& raspuns_utilizator) const override;
     bool verificaRaspuns(int raspuns_utilizator) const override;
     //size_t getNumarOptiuni() const; ///getter nr de optiuni
+    virtual void afiseazaTipIntrebare() const override;
 };
 
 #endif

@@ -17,7 +17,7 @@ private:
 
 public:
     //constructor de init
-    ProfilUtilizator(const std::string& nume) : numeProfil(nume) {}
+    explicit ProfilUtilizator(const std::string& nume) : numeProfil(nume) {}
 
     //metode de I/O
     void incarca();

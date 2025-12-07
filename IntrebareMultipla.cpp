@@ -37,7 +37,9 @@ void IntrebareMultipla::afiseazaDetalii(std::ostream& os) const {
     }
     os << "  (ATENTIE! Exista mai multe variante corecte!)\n";
 }
-
+void IntrebareMultipla::afiseazaTipIntrebare() const {
+    std::cout << "Tip: Raspunsuri Multiple.\n";
+}
 /*size_t IntrebareMultipla::getNumarOptiuni() const {
     return raspunsuriPosibile.size();
 }

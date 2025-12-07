@@ -14,13 +14,11 @@ void Clasament::incarca() {
         return;
     }
 
-    std::string nume;
-    size_t scor;
+    Scor s_nou("", 0);
 
-    while (fisierIn >> scor >> nume) {
-        listaScoruri.emplace_back(nume, scor);
+    while (fisierIn >> s_nou) {
+        listaScoruri.push_back(s_nou);
     }
-
     //asiguram ca lista este sortata imediat dupa incarcare
     std::sort(listaScoruri.begin(), listaScoruri.end(), comparaScoruri);
 }
@@ -33,7 +31,7 @@ void Clasament::salveaza() const {
     }
 
     for (const Scor& scor : listaScoruri) {
-        fisierOut << scor.valoare << " " << scor.nume << "\n";
+        fisierOut << scor << "\n";
     }
 }
 
@@ -58,4 +56,15 @@ void Clasament::afiseaza() const {
     for (size_t i = 0; i < listaScoruri.size(); ++i) {
         std::cout << i + 1 << ". " << listaScoruri[i].nume << " - " << listaScoruri[i].valoare << " puncte\n";
     }
+}
+
+std::ostream& operator<<(std::ostream& os, const Scor& s) {
+    os << s.valoare << " " << s.nume; // Formatul de salvare
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, Scor& s) {
+    // Citim scorul și numele
+    is >> s.valoare >> s.nume;
+    return is;
 }

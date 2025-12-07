@@ -18,6 +18,7 @@ public:
     int calculeazaPunctaj() const override;
     std::unique_ptr<Intrebare> clone() const override;
     void afiseazaDetalii(std::ostream& os) const override;
+    virtual void afiseazaTipIntrebare() const override;
 };
 
 #endif

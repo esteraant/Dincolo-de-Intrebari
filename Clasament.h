@@ -16,10 +16,8 @@ struct Scor {
     ///constructor de init
     Scor(const std::string& n, size_t v) : nume(n), valoare(v) {}
 
-    friend std::ostream& operator<<(std::ostream& os, const Scor& s) {
-        os << "[" << s.nume << ", Scor: " << s.valoare << "]";
-        return os;
-    }
+    friend std::ostream& operator<<(std::ostream& os, const Scor& s);
+    friend std::istream& operator>>(std::istream& is, Scor& s);
 };
 
 class Clasament {

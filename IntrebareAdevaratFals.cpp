@@ -21,7 +21,9 @@ bool IntrebareAdevaratFals::verificaRaspunsText(const std::string& raspuns_utili
 int IntrebareAdevaratFals::calculeazaPunctaj() const {
     return 1;
 }
-
+void IntrebareAdevaratFals::afiseazaTipIntrebare() const {
+    std::cout << "Tip: Raspuns Adevarat/Fals.\n";
+}
 ///constructor virtual (Clone)
 std::unique_ptr<Intrebare> IntrebareAdevaratFals::clone() const {
     return std::make_unique<IntrebareAdevaratFals>(*this);

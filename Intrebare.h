@@ -33,6 +33,7 @@ public:
     ///permite copierea obiectelor derivate
     virtual std::unique_ptr<Intrebare> clone() const = 0;
     virtual void afiseazaDetalii(std::ostream& os) const = 0;
+    virtual void afiseazaTipIntrebare() const = 0;
 
     /*static size_t getContorIntrebari() {
         return nr_intrebari_totale;

@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "aplicatie_exceptii.h"
 #include "Clasament.h"
+#include "ProfilUtilizator.h"
 
 #include <iostream>
 #include <vector>
@@ -104,14 +105,27 @@ int main() {
         numeUtilizator = "Anonim";
     }
 
+    ProfilUtilizator profil(numeUtilizator); //creeaza obiectul
+    profil.incarca(); //incarca highscore-ul anterior
+
+    std::cout << "\n\n";
+    std::cout << "Highscore-ul tau anterior este: "
+              << profil.getHighscoreGlobal() << " puncte.\n\n";
+
     ///mutarea vectorului de nivele în Quiz
     Quiz quiz(numeUtilizator, std::move(lista_nivele));
     quiz.aplicatie();
     std::cout << quiz;
 
-    size_t scorFinal = quiz.getScorTotal();
+    size_t scorFinal = quiz.getScorTotal(); // PĂSTREAZĂ DOAR PRIMA DECLARAȚIE
+
+    //actualizare profil personal
+    profil.actualizeazaHighscore(scorFinal);
+
+    //actualizare clasament global
     clasament.adaugaScor(numeUtilizator, scorFinal);
     clasament.afiseaza();
+
 
     ///testare
     std::cout << "\n Testare Getters si Polimorfism \n";
