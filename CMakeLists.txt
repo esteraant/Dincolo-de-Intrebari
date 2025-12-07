@@ -60,6 +60,8 @@ set(PROJECT_SOURCES
         IntrebareMultipla.cpp
         IntrebareRaspunsLiber.cpp
         utils.cpp
+        Clasament.cpp
+        Clasament.h
 )
 
 add_executable(${MAIN_EXECUTABLE_NAME} ${PROJECT_SOURCES})

@@ -5,6 +5,7 @@
 #include "Quiz.h"
 #include "utils.h"
 #include "aplicatie_exceptii.h"
+#include "Clasament.h"
 
 #include <iostream>
 #include <vector>
@@ -37,6 +38,7 @@ int main() {
             throw EroareDateInsuficiente(min_intrebari, toateIntrebarile.size());
 
     }
+
     ///catch-ul general pentru exceptii
     catch (const AplicatieExceptie& e) {
         std::cout << "\n    EROARE LA INCARCAREA DATELOR    \n";
@@ -88,6 +90,12 @@ int main() {
     n_test_atribuire = n_test_copie;
     ///std::cout << "\n";
 */
+    Clasament clasament;
+    try {
+        clasament.incarca();
+    } catch (const std::exception& e) {
+        std::cerr << "Eroare la incarcarea clasamentului: " << e.what() << "\n";
+    }
 
     ///rulare aplicatie
     std::string numeUtilizator;
@@ -101,6 +109,9 @@ int main() {
     quiz.aplicatie();
     std::cout << quiz;
 
+    size_t scorFinal = quiz.getScorTotal();
+    clasament.adaugaScor(numeUtilizator, scorFinal);
+    clasament.afiseaza();
 
     ///testare
     std::cout << "\n Testare Getters si Polimorfism \n";

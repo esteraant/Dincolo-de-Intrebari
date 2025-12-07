@@ -18,6 +18,7 @@ public:
     const std::vector<Nivel>& get_nivele() const {
     return nivele;
     }
+    size_t getScorTotal() const { return scorTotalGlobal; }
     Quiz(const std::string& nume, std::vector<Nivel> nivele_); ///constructor de init
 
     ///dezactivarea copierii pt a evita erori la Nivel
