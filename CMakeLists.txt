@@ -64,6 +64,7 @@ set(PROJECT_SOURCES
         Clasament.h
         ProfilUtilizator.h
         ProfilUtilizator.cpp
+        Generator.h
 )
 
 add_executable(${MAIN_EXECUTABLE_NAME} ${PROJECT_SOURCES})

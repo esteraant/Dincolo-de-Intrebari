@@ -25,14 +25,24 @@ private:
     std::vector<Scor> listaScoruri;
     std::string numeFisier = "clasament.txt";
 
+    Clasament() = default;
+    static Clasament* instanta; //design pattern - singleton
+
     //functie de comparare statica pt std::sort
     static bool comparaScoruri(const Scor& a, const Scor& b);
 
 public:
-    Clasament() = default;
+    //singura met prin care putem obtine obiectul
+    static Clasament& getInstanta() {
+        if (instanta == nullptr) {
+            instanta = new Clasament();
+        }
+        return *instanta;
+    }
 
-    Clasament(const Clasament& other) = default;
-    Clasament& operator=(const Clasament& other) = default;
+    //stergem pos de a copia obiectul
+    Clasament(const Clasament&) = delete;
+    void operator=(const Clasament&) = delete;
 
     Clasament(Clasament&& other) noexcept;
     Clasament& operator=(Clasament&& other) noexcept;

@@ -1,5 +1,6 @@
 #include "Clasament.h"
 
+Clasament* Clasament::instanta = nullptr;
 //implementarea fct de comparare
 bool Clasament::comparaScoruri(const Scor& a, const Scor& b) {
     //sorteaza descr
@@ -59,15 +60,16 @@ void Clasament::afiseaza() const {
 }
 
 std::ostream& operator<<(std::ostream& os, const Scor& s) {
-    os << s.valoare << " " << s.nume; // Formatul de salvare
+    os << s.valoare << " " << s.nume;
     return os;
 }
 
 std::istream& operator>>(std::istream& is, Scor& s) {
-    // Citim scorul și numele
+    //citim scorul si numele
     is >> s.valoare >> s.nume;
     return is;
 }
+/*
 //constr de mutare
 Clasament::Clasament(Clasament&& other) noexcept
     : listaScoruri{std::move(other.listaScoruri)},
@@ -82,4 +84,4 @@ Clasament& Clasament::operator=(Clasament&& other) noexcept {
         numeFisier = std::move(other.numeFisier);
     }
     return *this;
-}
+}*/

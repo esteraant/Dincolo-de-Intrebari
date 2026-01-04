@@ -1,4 +1,7 @@
-# Nu primesc notă pentru că nu am pus titlu și descriere
+# Dincolo De Întrebări
+
+Dincolo De Întrebări este o aplicație de tip quiz interactiv, structurată pe mai multe nivele de dificultate. Proiectul îmbină testarea cunoștințelor cu elemente narative: utilizatorul răspunde la diverse tipuri de întrebări, iar după finalizarea cu succes a fiecărui nivel, deblochează un nou capitol dintr-o poveste captivantă.
+
 
 ### Folosiți template-ul corespunzător grupei voastre!
 

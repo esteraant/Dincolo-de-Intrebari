@@ -7,6 +7,7 @@
 #include "aplicatie_exceptii.h"
 #include "Clasament.h"
 #include "ProfilUtilizator.h"
+#include "Generator.h"
 
 #include <iostream>
 #include <vector>
@@ -14,10 +15,6 @@
 #include <limits>
 #include <memory>
 #include <utility>
-
-///functii
-std::vector<std::unique_ptr<Intrebare>> citesteIntrebari(const std::string& numeFisier);
-std::vector<CapitolPoveste> citestePovesti(const std::string& numeFisier);
 
 
 int main() {
@@ -91,9 +88,9 @@ int main() {
     n_test_atribuire = n_test_copie;
     ///std::cout << "\n";
 */
-    Clasament clasament;
+    //Clasament clasament;
     try {
-        clasament.incarca();
+        Clasament::getInstanta().incarca();
     } catch (const std::exception& e) {
         std::cerr << "Eroare la incarcarea clasamentului: " << e.what() << "\n";
     }
@@ -123,8 +120,8 @@ int main() {
     profil.actualizeazaHighscore(scorFinal);
 
     //actualizare clasament global
-    clasament.adaugaScor(numeUtilizator, scorFinal);
-    clasament.afiseaza();
+    Clasament::getInstanta().adaugaScor(numeUtilizator, scorFinal);
+    Clasament::getInstanta().afiseaza();
 
 
     ///testare

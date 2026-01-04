@@ -1,5 +1,6 @@
 #include "utils.h"
 #include "aplicatie_exceptii.h"
+#include "Generator.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -91,23 +92,26 @@ std::vector<std::unique_ptr<Intrebare>> citesteIntrebari(const std::string& nume
 
         std::string text;
         std::string raspuns_corect_str; /// ex: G, A, L, M
-        int raspuns_corect_unic = 0; ///pt G, A, L
-        std::vector<std::string> optiuni; ///pt G, M
+        int raspuns_corect_unic = 0;
+        std::vector<std::string> optiuni;
+        std::set<int> indici_multipli;
+        std::vector<std::string> raspunsuri_libere_corecte;
 
         ///linia 2 - intrebarea propriu-zisa
         if (!std::getline(fin, text))
             throw EroareFormatDate("Lipsa text intrebare dupa tipul '" + std::string(1, tipIntrebare) + "'.");
 
-        ///linia 3 - Raspunsul Corect
+        ///linia 3 - raspunsul corect
         if (!std::getline(fin, linie))
             throw EroareFormatDate("Lipsa raspunsului corect (linia 3) dupa intrebarea: '" + text + "'.");
 
+        raspuns_corect_str = linie;
 
-        if (tipIntrebare == 'G' || tipIntrebare == 'A' || tipIntrebare == 'M') {
+        /*if (tipIntrebare == 'G' || tipIntrebare == 'A' || tipIntrebare == 'M') {
              raspuns_corect_str = linie;
         } else if (tipIntrebare == 'L') {
             raspuns_corect_str = linie;
-        }
+        } */
 
         ///linia 4: optiunile - pentru G si M
         if (tipIntrebare == 'G' || tipIntrebare == 'M') {
@@ -127,55 +131,34 @@ std::vector<std::unique_ptr<Intrebare>> citesteIntrebari(const std::string& nume
              }
           }
 
-        if (tipIntrebare == 'G') {
-            ///convertim rasp corect citit ca string in int
-             std::stringstream(raspuns_corect_str) >> raspuns_corect_unic;
-            ///cream dinamic un ob intrebaregrila
-             intrebari.push_back(std::make_unique<IntrebareGrila>(text, optiuni, raspuns_corect_unic - 1));
-        }
-        else if (tipIntrebare == 'A') {
-             std::stringstream(raspuns_corect_str) >> raspuns_corect_unic; ///convertim in int
-             intrebari.push_back(std::make_unique<IntrebareAdevaratFals>(text, raspuns_corect_unic == 1 ? 1 : 0)); ///cream si 1-A, 0-F
+        if (tipIntrebare == 'G' || tipIntrebare == 'A') {
+            std::stringstream(raspuns_corect_str) >> raspuns_corect_unic;
         }
         else if (tipIntrebare == 'L') {
-            ///lista de rasp corecte separate prin ;
-            std::stringstream ss_raspunsuri(raspuns_corect_str);
+            std::stringstream ss(raspuns_corect_str);
             std::string token;
-            std::vector<std::string> raspunsuri_libere_corecte; ///vector care stocheaza lista finala
-        ///separam stringul folosind ; si umplem vectorul
-            while (std::getline(ss_raspunsuri, token, ';')) {
-                // Adaugă trim aici pentru a curăța spațiile din răspunsurile libere
-                token = trim(token);
-                raspunsuri_libere_corecte.push_back(token);
+            while (std::getline(ss, token, ';')) {
+                raspunsuri_libere_corecte.push_back(trim(token));
             }
-            ///creare obiect raspunsliber
-            intrebari.push_back(std::make_unique<IntrebareRaspunsLiber>(text, raspunsuri_libere_corecte));
-
         }
         else if (tipIntrebare == 'M') {
-             std::set<int> indici_multipli; ///stocam indicii corecti
-             std::stringstream ss_raspuns(raspuns_corect_str);
-             std::string indice_str;
-             int indice;
+            std::stringstream ss(raspuns_corect_str);
+            std::string indice_str;
+            while (std::getline(ss, indice_str, ',')) {
+                indici_multipli.insert(std::stoi(trim(indice_str)));
+            }
+        }
+        auto nouaIntrebare = Generator::creeaza(
+                   tipIntrebare, text, optiuni, raspuns_corect_unic, indici_multipli, raspunsuri_libere_corecte
+               );
 
-             while (std::getline(ss_raspuns, indice_str, ',')) {
-                 // Curățăm spațiile din jurul indicelui
-                 indice_str = trim(indice_str);
-
-                 if (std::stringstream(indice_str) >> indice) {
-                     indici_multipli.insert(indice);
-                 }
-             }
-             ///daca nu am gasit optiuni
-             if (optiuni.empty()) throw EroareFormatDate("Lipsa optiunilor pentru intrebarea multipla.");
-             intrebari.push_back(std::make_unique<IntrebareMultipla>(text, optiuni, indici_multipli));
-
-        } else { ///niciun tip de intrebare nu a fost recunoscut
-             throw EroareFormatDate("Tip de intrebare necunoscut (" + std::string(1, tipIntrebare) + ") pentru intrebarea: " + text + ".");
+        if (nouaIntrebare) {
+            intrebari.push_back(std::move(nouaIntrebare));
+        } else {
+            throw EroareFormatDate("Tip de intrebare necunoscut: " + std::string(1, tipIntrebare));
         }
 
-        ///sarim peste randul gol separator
-        std::getline(fin, linie);
+        std::getline(fin, linie); // sarim peste randul gol separator
     }
 
     return intrebari;

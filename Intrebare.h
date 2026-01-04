@@ -28,7 +28,7 @@ public:
         return false;
     }
     virtual bool verificaRaspunsText(const std::string& raspuns_utilizator) const = 0;
-    virtual int calculeazaPunctaj()
+    virtual int calculeazaPunctaj() ///functie virtuala
         const = 0;
     ///permite copierea obiectelor derivate
     virtual std::unique_ptr<Intrebare> clone() const = 0;
