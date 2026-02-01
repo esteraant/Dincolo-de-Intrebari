@@ -1,4 +1,4 @@
-#include "Clasament.h"
+#include "../headers/Clasament.h"
 
 Clasament* Clasament::instanta = nullptr;
 //implementarea fct de comparare
@@ -15,10 +15,10 @@ void Clasament::incarca() {
         return;
     }
 
-    Scor s_nou("", 0);
+    Scor scorNou("", 0);
 
-    while (fisierIn >> s_nou) {
-        listaScoruri.push_back(s_nou);
+    while (fisierIn >> scorNou) {
+        listaScoruri.push_back(scorNou);
     }
     //asiguram ca lista este sortata imediat dupa incarcare
     std::sort(listaScoruri.begin(), listaScoruri.end(), comparaScoruri);

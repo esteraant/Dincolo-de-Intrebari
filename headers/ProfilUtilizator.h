@@ -1,6 +1,11 @@
 #ifndef PROFILUTILIZATOR_H
 #define PROFILUTILIZATOR_H
 
+/**
+ * @brief Manages individual player profiles, including their personal highscore.
+ * This class handles personal progress by saving and loading data from a user-specific file.
+ */
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -17,26 +22,30 @@ private:
 
 public:
     //constructor de init
-    explicit ProfilUtilizator(const std::string& nume) : numeProfil(nume) {}
+    explicit ProfilUtilizator(const std::string &nume) : numeProfil(nume) {
+    }
 
 
-    ProfilUtilizator(const ProfilUtilizator& other) = delete;
-    ProfilUtilizator& operator=(const ProfilUtilizator& other) = delete;
+    ProfilUtilizator(const ProfilUtilizator &other) = delete;
+
+    ProfilUtilizator &operator=(const ProfilUtilizator &other) = delete;
 
     //mutarea explicita
-    ProfilUtilizator(ProfilUtilizator&& other) noexcept;
-    ProfilUtilizator& operator=(ProfilUtilizator&& other) noexcept;
+    ProfilUtilizator(ProfilUtilizator &&other) noexcept;
+
+    ProfilUtilizator &operator=(ProfilUtilizator &&other) noexcept;
 
     //destructor explicit
     ~ProfilUtilizator();
 
     //metode de I/O
     void incarca();
+
     //metoda de logica
     void actualizeazaHighscore(size_t scorNou);
 
     //getteri
-    const std::string& getNumeProfil() const { return numeProfil; }
+    const std::string &getNumeProfil() const { return numeProfil; }
     size_t getHighscoreGlobal() const { return highscoreGlobal; }
 };
 

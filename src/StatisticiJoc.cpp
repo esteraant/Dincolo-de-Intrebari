@@ -1,4 +1,4 @@
-#include "StatisticiJoc.h"
+#include "../headers/StatisticiJoc.h"
 #include <iostream>
 
 void StatisticiJoc::adaugaRaspuns(bool corect) {

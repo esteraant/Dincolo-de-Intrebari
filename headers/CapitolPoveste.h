@@ -1,6 +1,12 @@
 #ifndef CAPITOLPOVESTE_H
 #define CAPITOLPOVESTE_H
 
+/**
+ *  @brief Represents a story chapter that can be unlocked during the game.
+ * This class stores the narrative content and manages its visibility state.
+ * Chapters are unlocked after completing a level.
+ */
+
 #include <iostream>
 #include <string>
 
@@ -11,13 +17,14 @@ private:
     bool deblocat;
 
 public:
-    CapitolPoveste(const std::string& titlu, const std::string& continut) : deblocat{false} ///construtor de init
+    CapitolPoveste(const std::string &titlu, const std::string &continut) : deblocat{false} ///construtor de init
     {
         this->titlu = titlu;
         this->continut = continut;
     }
 
-    CapitolPoveste() : deblocat{false} {} ///constructor default
+    CapitolPoveste() : deblocat{false} {
+    } ///constructor default
     ~CapitolPoveste() = default; ///destructor
 
     void deblocheaza() {
@@ -33,16 +40,16 @@ public:
     }*/
 
     ///operator<<
-    friend std::ostream& operator<<(std::ostream& os, const CapitolPoveste& cap) {
+    friend std::ostream &operator<<(std::ostream &os, const CapitolPoveste &cap) {
         os << "~     " << cap.titlu << "     ~\n";
         if (cap.deblocat) {
             os << cap.continut << "\n";
-        }
-        else {
+        } else {
             os << "Capitol blocat. Raspunde corect la intrebari pentru a-l debloca.\n";
         }
         return os;
     }
+    bool esteFinalizat() const { return deblocat; }
 };
 
 #endif

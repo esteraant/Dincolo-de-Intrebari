@@ -1,32 +1,31 @@
-#include "Nivel.h"
+#include "../headers/Nivel.h"
 #include <utility>
 #include <functional>
-#include <stdexcept>
+//#include <stdexcept>
 #include <chrono>
-
+#include "IntrebareRaspunsLiber.h"
 ///constructor de initializare
-Nivel::Nivel(const std::string& nume, std::vector<std::unique_ptr<Intrebare>> intrebari_, const CapitolPoveste& poveste_)
-    : nivelPromovat{false}
-{
+Nivel::Nivel(const std::string &nume, std::vector<std::unique_ptr<Intrebare> > intrebari_,
+             const CapitolPoveste &poveste_)
+    : nivelPromovat{false} {
     this->numeNivel = nume;
     this->intrebari = std::move(intrebari_);
     this->poveste = poveste_;
 }
 
 ///constructor de copiere
-Nivel::Nivel(const Nivel& nivel)
+Nivel::Nivel(const Nivel &nivel)
     : numeNivel{nivel.numeNivel},
-        poveste{nivel.poveste},
-        nivelPromovat{nivel.nivelPromovat}
-{
+      poveste{nivel.poveste},
+      nivelPromovat{nivel.nivelPromovat} {
     ///std::cout << "Nivel " << nivel.numeNivel << " copiat.\n";
-    for (const std::unique_ptr<Intrebare>& intrebare_ptr : nivel.intrebari) {
-    this->intrebari.push_back(intrebare_ptr->clone());
-}
+    for (const std::unique_ptr<Intrebare> &intrebare_ptr: nivel.intrebari) {
+        this->intrebari.push_back(intrebare_ptr->clone());
+    }
 }
 
 ///operator de atribuire
-Nivel& Nivel::operator=(const Nivel& nivel) {
+Nivel &Nivel::operator=(const Nivel &nivel) {
     ///std::cout << "Atribuire Nivel " << nivel.numeNivel << " \n";
 
     if (this != &nivel) {
@@ -43,11 +42,12 @@ Nivel& Nivel::operator=(const Nivel& nivel) {
 }
 
 
-void Nivel::afiseaza_vieti(int count, size_t scor) const { ///functie pt afisarea inimilor
+void Nivel::afiseazaVieti(int count, size_t scor) const {
+    ///functie pt afisarea inimilor
 
     std::cout << "  Vieti Ramase:   ";
 
-    for(int v = 0; v < 5; v++)
+    for (int v = 0; v < 5; v++)
         if (v < count)
             std::cout << "# ";
         else
@@ -58,89 +58,89 @@ void Nivel::afiseaza_vieti(int count, size_t scor) const { ///functie pt afisare
 };
 
 
-bool Nivel::ruleaza_test(size_t& scorGlobal, StatisticiJoc& stats) {
-    size_t raspunsuri_corecte = 0;
-    int vieti_ramase = 5;
+bool Nivel::ruleazaTest(size_t &scorGlobal, StatisticiJoc &stats) {
+    size_t raspunsuriCorecte = 0;
+    int vietiRamase = 5;
 
     std::cout << "\n " << numeNivel << " \n";
     std::cout << "Raspunde corect la fiecare intrebare pentru a continua!\n";
 
     for (size_t i = 0; i < intrebari.size(); i++) {
-        Intrebare* intrebare = intrebari[i].get();
+        Intrebare *intrebare = intrebari[i].get();
         bool corect = false;
 
         ///idenfiticam tipul de intrebare - daca e raspuns liber
-        const IntrebareRaspunsLiber* liber_ptr = dynamic_cast<IntrebareRaspunsLiber*>(intrebare);
+        const IntrebareRaspunsLiber *liberPtr = dynamic_cast<IntrebareRaspunsLiber *>(intrebare);
 
-        while (!corect && vieti_ramase > 0) {
+        while (!corect && vietiRamase > 0) {
             auto timpStart = std::chrono::steady_clock::now();
 
-            afiseaza_vieti(vieti_ramase, scorGlobal);
+            afiseazaVieti(vietiRamase, scorGlobal);
             std::cout << "\n" << *intrebare;
 
-            if (liber_ptr) {
+            if (liberPtr) {
                 ///raspuns liber - citim stringul
-                std::string raspuns_utilizator_str;
+                std::string raspunsUtilizatorStr;
                 std::cout << "Raspunsul tau (text): ";
 
-                std::getline(std::cin >> std::ws, raspuns_utilizator_str);
+                std::getline(std::cin >> std::ws, raspunsUtilizatorStr);
                 ///std:ws ignora spatiile albe de la inceput si citim toata linia
 
-                if (intrebare->verificaRaspunsText(raspuns_utilizator_str)) {
-
+                if (intrebare->verificaRaspunsText(raspunsUtilizatorStr)) {
                     auto timpFinal = std::chrono::steady_clock::now();
                     auto durata = std::chrono::duration_cast<std::chrono::milliseconds>(timpFinal - timpStart).count();
-                    if (durata < 5000) {  ///mai putin de 5s
+                    if (durata < 5000) {
+                        ///mai putin de 5s
                         scorGlobal += 5;
                         std::cout << "BONUS VITEZA! + 5 puncte.\n";
                     }
 
                     std::cout << "Raspuns CORECT! Ai castigat " << intrebare->calculeazaPunctaj() << " puncte.\n";
                     scorGlobal += intrebare->calculeazaPunctaj();
-                    raspunsuri_corecte++;
+                    raspunsuriCorecte++;
                     corect = true;
                     stats.adaugaRaspuns(true);
                 } else {
-                    vieti_ramase--;
-                    if(scorGlobal >= 1)
+                    vietiRamase--;
+                    if (scorGlobal >= 1)
                         scorGlobal--;
                     else scorGlobal = 0; ///scorul ramane >=0 si scadem 1 dc e gresit rasp
 
                     std::cout << "\n Raspuns GRESIT! Ai pierdut 1 punct si 1 viata.\n";
-                    if (vieti_ramase == 0) {
-                        std::cout << " JOC TERMINAT! Ai ramas fara vieti! \n"    ;
+                    if (vietiRamase == 0) {
+                        std::cout << " JOC TERMINAT! Ai ramas fara vieti! \n";
                         return false; ///inchidem jocul
                     }
                     std::cout << "Incearca din nou.\n";
                     stats.adaugaRaspuns(false);
                 }
-
             } else {
                 ///altfel citim int
-                int raspuns_utilizator_int;
+                int raspunsUtilizatorInt;
                 std::cout << "Raspunsul tau (nr optiune): ";
 
-                if (!(std::cin >> raspuns_utilizator_int)) { ///erori
+                if (!(std::cin >> raspunsUtilizatorInt)) {
+                    ///erori
                     std::cin.clear();
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                     std::cout << "\nIntrare invalida. Te rog introdu numarul optiunii.\n";
                     continue;
                 }
 
-                if (intrebare->verificaRaspuns(raspuns_utilizator_int)) {
+                if (intrebare->verificaRaspuns(raspunsUtilizatorInt)) {
                     std::cout << "Raspuns CORECT! Ai castigat " << intrebare->calculeazaPunctaj() << " puncte.\n";
                     scorGlobal += intrebare->calculeazaPunctaj();
                     stats.adaugaRaspuns(true);
-                    raspunsuri_corecte++;
+                    raspunsuriCorecte++;
                     corect = true;
                 } else {
-                    vieti_ramase--; ///pierde o viata
-                    if(scorGlobal >= 1)
+                    vietiRamase--; ///pierde o viata
+                    if (scorGlobal >= 1)
                         scorGlobal--;
                     else scorGlobal = 0; ///scorul ramane >=0 si scadem 1 dc e gresit rasp
                     std::cout << "\n Raspuns GRESIT! Ai pierdut 1 punct si 1 viata.\n";
-                    if (vieti_ramase == 0) {
-                        std::cout << " JOC TERMINAT! Ai ramas fara vieti! \n"    ;
+                    if (vietiRamase == 0) {
+                        std::cout << " JOC TERMINAT! Ai ramas fara vieti! \n";
                         return false; ///inchidem jocul
                     }
                     std::cout << "Incearca din nou.\n";
@@ -150,13 +150,13 @@ bool Nivel::ruleaza_test(size_t& scorGlobal, StatisticiJoc& stats) {
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             }
-            if(vieti_ramase == 0)
+            if (vietiRamase == 0)
                 return false;
         }
     }
 
     ///dupa ce a rasp corect la toate intrebarile
-    if (raspunsuri_corecte == intrebari.size()) {
+    if (raspunsuriCorecte == intrebari.size()) {
         this->poveste.deblocheaza();
         this->nivelPromovat = true;
         std::cout << "\n FELICITARI! Scorul tau total este: " << scorGlobal << ".\n";
@@ -191,7 +191,7 @@ bool Nivel::estePromovat() const {
 */
 
 ///operator<<
-std::ostream& operator<<(std::ostream& os, const Nivel& niv) {
+std::ostream &operator<<(std::ostream &os, const Nivel &niv) {
     os << "\n=== Nivel " << niv.numeNivel << " ===\n";
     os << "Status: ";
     if (niv.nivelPromovat) os << "DEBLOCAT";

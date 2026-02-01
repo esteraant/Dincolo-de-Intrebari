@@ -1,5 +1,9 @@
 #ifndef APLICATIE_EXCEPTII_H
 #define APLICATIE_EXCEPTII_H
+/**
+ *@brief Base class for all custom exceptions in the application
+ *
+ */
 
 #include <stdexcept>
 #include <string>
@@ -11,9 +15,10 @@ protected:
 
 public:
     ///constructor
-    explicit AplicatieExceptie(const std::string& msg) : mesaj{msg} {}
+    explicit AplicatieExceptie(const std::string &msg) : mesaj{msg} {
+    }
 
-    virtual const char* what() const noexcept override {
+    virtual const char *what() const noexcept override {
         return mesaj.c_str();
     }
 };
@@ -22,16 +27,18 @@ public:
 ///eroare citirea fisierelor
 class EroareFisierInexistent : public AplicatieExceptie {
 public:
-    explicit EroareFisierInexistent(const std::string& nume_fisier)
-        : AplicatieExceptie("Eroare I/O: Fisierul '" + nume_fisier + "' nu a putut fi deschis/gasit.") {}
+    explicit EroareFisierInexistent(const std::string &numeFisier)
+        : AplicatieExceptie("Eroare I/O: Fisierul '" + numeFisier + "' nu a putut fi deschis/gasit.") {
+    }
 };
 
 
 ///eroare la date
 class EroareFormatDate : public AplicatieExceptie {
 public:
-    explicit EroareFormatDate(const std::string& detalii)
-        : AplicatieExceptie("Eroare Format Date: Datele din fisier sunt structurate gresit. Detalii: " + detalii) {}
+    explicit EroareFormatDate(const std::string &detalii)
+        : AplicatieExceptie("Eroare Format Date: Datele din fisier sunt structurate gresit. Detalii: " + detalii) {
+    }
 };
 
 
@@ -40,7 +47,8 @@ class EroareDateInsuficiente : public AplicatieExceptie {
 public:
     EroareDateInsuficiente(size_t necesar, size_t gasit)
         : AplicatieExceptie("Eroare Logica: Numar insuficient de elemente. Necesar minim: " + std::to_string(necesar) +
-                             ", Gasit: " + std::to_string(gasit) + ".") {}
+                            ", Gasit: " + std::to_string(gasit) + ".") {
+    }
 };
 
 #endif

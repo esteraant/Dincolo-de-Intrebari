@@ -49,25 +49,28 @@ include(cmake/CopyHelper.cmake)
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 set(PROJECT_SOURCES
-        main.cpp
-        Quiz.cpp
-        Nivel.cpp
-        StatisticiJoc.cpp
-        CapitolPoveste.cpp
-        Intrebare.cpp
-        IntrebareAdevaratFals.cpp
-        IntrebareGrila.cpp
-        IntrebareMultipla.cpp
-        IntrebareRaspunsLiber.cpp
-        utils.cpp
-        Clasament.cpp
-        Clasament.h
-        ProfilUtilizator.h
-        ProfilUtilizator.cpp
-        Generator.h
+        src/main.cpp
+        src/Quiz.cpp
+        src/Nivel.cpp
+        src/StatisticiJoc.cpp
+        src/CapitolPoveste.cpp
+        src/Intrebare.cpp
+        src/IntrebareAdevaratFals.cpp
+        src/IntrebareGrila.cpp
+        src/IntrebareMultipla.cpp
+        src/IntrebareRaspunsLiber.cpp
+        src/utils.cpp
+        src/Clasament.cpp
+        headers/Clasament.h
+        headers/ProfilUtilizator.h
+        src/ProfilUtilizator.cpp
+        headers/Generator.h
+        headers/ColectieResurse.h
+        headers/UtilitareProgres.h
 )
 
 add_executable(${MAIN_EXECUTABLE_NAME} ${PROJECT_SOURCES})
+target_include_directories(${MAIN_EXECUTABLE_NAME} PRIVATE headers)
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
 # NOTE: RUN_SANITIZERS is optional, if it's not present it will default to true
@@ -93,6 +96,6 @@ if(APPLE)
     install(FILES launcher.command DESTINATION ${DESTINATION_DIR})
 endif()
 
-copy_files(FILES tastatura.txt intrebari.txt poveste.txt COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
+copy_files(FILES resources/tastatura.txt resources/intrebari.txt resources/poveste.txt COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 # copy_files(FILES tastatura.txt config.json DIRECTORY images sounds COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 # copy_files(DIRECTORY images sounds COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})

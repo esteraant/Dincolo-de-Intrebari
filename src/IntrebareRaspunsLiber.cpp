@@ -1,14 +1,15 @@
-#include "IntrebareRaspunsLiber.h"
+#include "../headers/IntrebareRaspunsLiber.h"
 #include <algorithm>
 #include <cctype>
 #include <sstream>
 #include <vector>
 
 ///schimbam raspunsul utilizatorului sa contina un string doar din caractere de la a-z
-std::string ConvertireRaspuns(const std::string& str) {
+std::string ConvertireRaspuns(const std::string &str) {
     std::string sir = "";
 
-    for (size_t i = 0; i < str.length(); i++) { ///momentan pastram spatiile
+    for (size_t i = 0; i < str.length(); i++) {
+        ///momentan pastram spatiile
         char c = str[i];
         if (std::isalpha(static_cast<unsigned char>(c)) || c == ' ') {
             sir += static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
@@ -28,27 +29,25 @@ std::string ConvertireRaspuns(const std::string& str) {
 
 
 ///constructor
-IntrebareRaspunsLiber::IntrebareRaspunsLiber(const std::string& t, const std::vector<std::string>& rC)
-    : Intrebare(t, -1)
-{
+IntrebareRaspunsLiber::IntrebareRaspunsLiber(const std::string &t, const std::vector<std::string> &rC)
+    : Intrebare(t, -1) {
     this->raspunsuriCorecte = rC;
 }
 
-bool IntrebareRaspunsLiber::verificaRaspunsText(const std::string& raspuns_utilizator) const {
-
-    std::string raspuns_utilizator_normalizat = ConvertireRaspuns(raspuns_utilizator);
+bool IntrebareRaspunsLiber::verificaRaspunsText(const std::string &raspunsUtilizator) const {
+    std::string raspunsUtilizatorNormalizat = ConvertireRaspuns(raspunsUtilizator);
     ///cautam rasp utilizatorului in lista de raspunsuri corecte
-    for (const std::string& raspuns_corect : raspunsuriCorecte) {
-        std::string raspuns_corect_normalizat = ConvertireRaspuns(raspuns_corect);
+    for (const std::string &raspunsCorect: raspunsuriCorecte) {
+        std::string raspunsCorectNormalizat = ConvertireRaspuns(raspunsCorect);
 
-        if (raspuns_corect_normalizat == raspuns_utilizator_normalizat) {
+        if (raspunsCorectNormalizat == raspunsUtilizatorNormalizat) {
             return true;
         }
     }
     return false;
 }
 
-/*bool IntrebareRaspunsLiber::verificaRaspuns(int raspuns_utilizator) const {
+/*bool IntrebareRaspunsLiber::verificaRaspuns(int raspunsUtilizator) const {
     return false;
 }*/
 
@@ -61,9 +60,10 @@ std::unique_ptr<Intrebare> IntrebareRaspunsLiber::clone() const {
     return std::make_unique<IntrebareRaspunsLiber>(*this);
 }
 
-void IntrebareRaspunsLiber::afiseazaDetalii(std::ostream& os) const {
+void IntrebareRaspunsLiber::afiseazaDetalii(std::ostream &os) const {
     os << "  (Raspunde in scris)\n";
 }
+
 void IntrebareRaspunsLiber::afiseazaTipIntrebare() const {
     std::cout << "Tip: Raspuns Liber.\n";
 }

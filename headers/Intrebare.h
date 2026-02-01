@@ -1,6 +1,11 @@
 #ifndef INTREBARE_H
 #define INTREBARE_H
 
+/**
+ * @brief Abstract base class representing a generic quiz question.
+ * This class serves as the foundation for all question types (Grila, Multipla, etc.).
+ */
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -10,37 +15,44 @@
 class Intrebare {
 private:
     std::string text;
-    static size_t nr_intrebari_totale;
+    static size_t nrIntrebariTotale;
 
 protected: /// protected pentru a fi accesibile claselor derivate
     int raspunsCorect;
 
 public:
     ///constructor de baza
-    Intrebare(const std::string& t, int rC);
+    Intrebare(const std::string &t, int rC);
 
     ///constructor default
-    Intrebare() : raspunsCorect{-1} {}
+    Intrebare() : raspunsCorect{-1} {
+    }
+
     virtual ~Intrebare() = default;
 
-    virtual bool verificaRaspuns(int raspuns_utilizator) const {
-        static_cast<void>(raspuns_utilizator); //pt advertisment git
+    virtual bool verificaRaspuns(int raspunsUtilizator) const {
+        static_cast<void>(raspunsUtilizator); //pt advertisment git
         return false;
     }
-    virtual bool verificaRaspunsText(const std::string& raspuns_utilizator) const = 0;
+
+    virtual bool verificaRaspunsText(const std::string &raspunsUtilizator) const = 0;
+
     virtual int calculeazaPunctaj() ///functie virtuala
-        const = 0;
+    const = 0;
+
     ///permite copierea obiectelor derivate
     virtual std::unique_ptr<Intrebare> clone() const = 0;
-    virtual void afiseazaDetalii(std::ostream& os) const = 0;
+
+    virtual void afiseazaDetalii(std::ostream &os) const = 0;
+
     virtual void afiseazaTipIntrebare() const = 0;
 
     /*static size_t getContorIntrebari() {
-        return nr_intrebari_totale;
+        return nrIntrebariTotale;
     }*/
 
     ///interfata non-virtuala
-    void afiseaza(std::ostream& os) const {
+    void afiseaza(std::ostream &os) const {
         os << "[INTREBARE]: " << text << "\n";
         afiseazaDetalii(os); ///apel polimorfic
     }
@@ -49,7 +61,7 @@ public:
     /*const std::string& getText() const;
     int getraspunsCorectIndex() const;*/
 
-    friend std::ostream& operator<<(std::ostream& os, const Intrebare& intrebare) {
+    friend std::ostream &operator<<(std::ostream &os, const Intrebare &intrebare) {
         intrebare.afiseaza(os);
         return os;
     }

@@ -1,20 +1,18 @@
-#include "ProfilUtilizator.h"
+#include "../headers/ProfilUtilizator.h"
 
 //destructor
 ProfilUtilizator::~ProfilUtilizator() {
-
 }
 
 //constructor de mutare
-ProfilUtilizator::ProfilUtilizator(ProfilUtilizator&& other) noexcept
+ProfilUtilizator::ProfilUtilizator(ProfilUtilizator &&other) noexcept
     : numeProfil{std::move(other.numeProfil)},
-      highscoreGlobal{other.highscoreGlobal}
-{
+      highscoreGlobal{other.highscoreGlobal} {
     other.highscoreGlobal = 0;
 }
 
 //operator de atribuire prin mutare
-ProfilUtilizator& ProfilUtilizator::operator=(ProfilUtilizator&& other) noexcept {
+ProfilUtilizator &ProfilUtilizator::operator=(ProfilUtilizator &&other) noexcept {
     if (this != &other) {
         //mutam resursele
         numeProfil = std::move(other.numeProfil);
@@ -26,7 +24,7 @@ ProfilUtilizator& ProfilUtilizator::operator=(ProfilUtilizator&& other) noexcept
     return *this;
 }
 
-std::string getCaleFisier(const std::string& numeProfil) {
+std::string getCaleFisier(const std::string &numeProfil) {
     //inlocuim spatiile sau caracterele cu _ pt a preveni erorile in numele fisierului
     std::string numeCurat = numeProfil;
     std::replace(numeCurat.begin(), numeCurat.end(), ' ', '_');
