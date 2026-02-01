@@ -30,15 +30,14 @@ int main() {
         ///blocl try incapsuleaza toata logica de incarcare a datelor unde pot aparea erori
 
         toateIntrebarile = citesteIntrebari("intrebari.txt");
-
         auto vectorCapitole = citestePovesti("poveste.txt");
         for (auto& cap : vectorCapitole) {
             bibliotecaCapitole.adauga(std::move(cap));
         }
 
         ///definirea cerintelor minime pt a rula aplicatia
-        const size_t minIntrebari = 8;
-        const size_t minCapitole = 4;
+        constexpr size_t minIntrebari = 8;
+        constexpr size_t minCapitole = 4;
 
         ///verificam daca s-au incarcat suficiente date; daca nu, aruncam o exceptie
         if (toateIntrebarile.size() < minIntrebari || bibliotecaCapitole.getDimensiune() < minCapitole)

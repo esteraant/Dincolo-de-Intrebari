@@ -15,9 +15,9 @@ Nivel::Nivel(const std::string &nume, std::vector<std::unique_ptr<Intrebare> > i
 
 ///constructor de copiere
 Nivel::Nivel(const Nivel &nivel)
-    : numeNivel{nivel.numeNivel},
-      poveste{nivel.poveste},
-      nivelPromovat{nivel.nivelPromovat} {
+    : numeNivel(nivel.numeNivel),
+      poveste(nivel.poveste),
+      nivelPromovat(nivel.nivelPromovat) {
     ///std::cout << "Nivel " << nivel.numeNivel << " copiat.\n";
     for (const std::unique_ptr<Intrebare> &intrebare_ptr: nivel.intrebari) {
         this->intrebari.push_back(intrebare_ptr->clone());

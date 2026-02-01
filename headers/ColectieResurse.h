@@ -12,7 +12,7 @@ public:
         elemente.push_back(std::move(element));
     }
 
-    size_t getDimensiune() const {
+    [[nodiscard]]size_t getDimensiune() const {
         return elemente.size();
     }
 
@@ -21,7 +21,7 @@ public:
         return elemente[index];
     }
     
-    const std::vector<T>& getToate() const { return elemente; }
+    //const std::vector<T>& getToate() const { return elemente; }
 
 };
 

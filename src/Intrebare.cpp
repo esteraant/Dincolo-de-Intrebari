@@ -10,6 +10,7 @@ Intrebare::Intrebare(const std::string &t, int rC) {
     Intrebare::nrIntrebariTotale++; ///nr total de obiecte create
 }
 
+
 ///destructor virtual
 /*Intrebare::~Intrebare() {
     Intrebare::nrIntrebariTotale--;

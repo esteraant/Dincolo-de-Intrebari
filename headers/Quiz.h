@@ -22,9 +22,9 @@ private:
     StatisticiJoc statistici;
 
 public:
-    const std::vector<Nivel> &get_nivele() const {
-        return nivele;
-    }
+    // const std::vector<Nivel> &get_nivele() const {
+    //     return nivele;
+    // }
 
     size_t getScorTotal() const { return scorTotalGlobal; }
 

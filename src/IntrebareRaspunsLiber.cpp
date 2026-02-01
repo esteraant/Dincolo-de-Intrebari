@@ -37,8 +37,8 @@ IntrebareRaspunsLiber::IntrebareRaspunsLiber(const std::string &t, const std::ve
 bool IntrebareRaspunsLiber::verificaRaspunsText(const std::string &raspunsUtilizator) const {
     std::string raspunsUtilizatorNormalizat = ConvertireRaspuns(raspunsUtilizator);
     ///cautam rasp utilizatorului in lista de raspunsuri corecte
-    for (const std::string &raspunsCorect: raspunsuriCorecte) {
-        std::string raspunsCorectNormalizat = ConvertireRaspuns(raspunsCorect);
+    for (const std::string &rCorect: raspunsuriCorecte) {
+        std::string raspunsCorectNormalizat = ConvertireRaspuns(rCorect);
 
         if (raspunsCorectNormalizat == raspunsUtilizatorNormalizat) {
             return true;
