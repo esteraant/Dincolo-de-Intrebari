@@ -61,10 +61,7 @@ public:
     /*const std::string& getText() const;
     int getraspunsCorectIndex() const;*/
 
-    friend std::ostream &operator<<(std::ostream &os, const Intrebare &intrebare) {
-        intrebare.afiseaza(os);
-        return os;
-    }
+    friend std::ostream &operator<<(std::ostream &os, const Intrebare &i);
 };
 
 #endif

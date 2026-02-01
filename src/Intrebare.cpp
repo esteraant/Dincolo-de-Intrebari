@@ -9,7 +9,10 @@ Intrebare::Intrebare(const std::string &t, int rC) {
     this->raspunsCorect = rC;
     Intrebare::nrIntrebariTotale++; ///nr total de obiecte create
 }
-
+std::ostream &operator<<(std::ostream &os, const Intrebare &i) {
+    i.afiseazaDetalii(os);
+    return os;
+}
 
 ///destructor virtual
 /*Intrebare::~Intrebare() {
