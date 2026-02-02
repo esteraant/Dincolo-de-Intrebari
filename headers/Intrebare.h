@@ -46,6 +46,7 @@ public:
     virtual void afiseazaDetalii(std::ostream &os) const = 0;
 
     virtual void afiseazaTipIntrebare() const = 0;
+    const std::string& getText() const { return text; }
 
     /*static size_t getContorIntrebari() {
         return nrIntrebariTotale;

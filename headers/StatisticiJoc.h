@@ -12,18 +12,24 @@ class StatisticiJoc {
 private:
     size_t raspunsuriTotale = 0;
     size_t raspunsuriCorecte = 0;
+    size_t nrNiveleTerminate = 0;
+    size_t nrPovestiDescoperite = 0;
 
 public:
     StatisticiJoc() = default;
 
-    ///metoda pt actualizarea starii
+    void bifeazaNivelTerminat() { nrNiveleTerminate++; }
+    void bifeazaPovesteDescoperita() { nrPovestiDescoperite++; }
     void adaugaRaspuns(bool corect);
 
     ///calculam procentul
     double calculeazaAcuratetea() const;
 
-    ///afisarea datelor
-    void afiseazaStatistici() const;
+    void afiseazaStatistici(int totalNivele) const;
+    float getProcentProgres(int totalNivele) const {
+        if (totalNivele == 0) return 0;
+        return (static_cast<float>(nrNiveleTerminate) / totalNivele) * 100;
+    }
 };
 
 #endif

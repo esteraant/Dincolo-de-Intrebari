@@ -9,7 +9,6 @@ std::string ConvertireRaspuns(const std::string &str) {
     std::string sir = "";
 
     for (size_t i = 0; i < str.length(); i++) {
-        ///momentan pastram spatiile
         char c = str[i];
         if (std::isalpha(static_cast<unsigned char>(c)) || c == ' ') {
             sir += static_cast<char>(std::tolower(static_cast<unsigned char>(c)));

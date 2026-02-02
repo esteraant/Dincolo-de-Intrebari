@@ -1,5 +1,7 @@
 #include "../headers/Clasament.h"
-
+#include <nlohmann/json.hpp>
+#include <fstream>
+#include <iomanip>
 Clasament* Clasament::instanta = nullptr;
 //implementarea fct de comparare
 bool Clasament::comparaScoruri(const Scor& a, const Scor& b) {
@@ -11,7 +13,7 @@ void Clasament::incarca() {
     std::ifstream fisierIn(numeFisier);
     listaScoruri.clear();
 
-    if (!fisierIn.is_open()) { //dc fisierul nu exista
+    if (!fisierIn.is_open()) {
         return;
     }
 
@@ -37,15 +39,22 @@ void Clasament::salveaza() const {
 }
 
 void Clasament::adaugaScor(const std::string& nume, size_t scor) {
-    //adauga scor, sorteaza si limiteaza lista top 10
-    listaScoruri.emplace_back(nume, scor);
-    std::sort(listaScoruri.begin(), listaScoruri.end(), comparaScoruri);
-
-    if (listaScoruri.size() > 10) {
-        listaScoruri.resize(10);
+    bool gasit = false;
+    for (auto& s : listaScoruri) {
+        if (s.nume == nume) {
+            if (scor > s.valoare) s.valoare = scor;
+            gasit = true;
+            break;
+        }
     }
+    if (!gasit) {
+        listaScoruri.emplace_back(nume, scor);
+    }
+    std::sort(listaScoruri.begin(), listaScoruri.end(), comparaScoruri);
+    if (listaScoruri.size() > 10) listaScoruri.resize(10);
 
     salveaza();
+    salveazaJson();
 }
 
 void Clasament::afiseaza() const {
@@ -85,3 +94,25 @@ Clasament& Clasament::operator=(Clasament&& other) noexcept {
     }
     return *this;
 }*/
+using json = nlohmann::json;
+
+void Clasament::salveazaJson() {
+    using json = nlohmann::json;
+    json j;
+
+    j["nume_proiect"] = "Dincolo de Intrebari";
+    j["data_ultima_actualizare"] = "2026-02-02";
+
+    for (const auto& s : listaScoruri) {
+        j["top_jucatori"].push_back({
+            {"nume", s.nume},
+            {"scor", s.valoare}
+        });
+    }
+
+    std::ofstream file("clasament.json");
+    if (file.is_open()) {
+        file << std::setw(4) << j << std::endl;
+        file.close();
+    }
+}

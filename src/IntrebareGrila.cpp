@@ -1,6 +1,5 @@
 #include "../headers/IntrebareGrila.h"
 
-///constructor - apeleaza constructorul clasei de baza
 IntrebareGrila::IntrebareGrila(const std::string &t, const std::vector<std::string> &rP, int rC)
     : Intrebare(t, rC) {
     this->raspunsuriPosibile = rP;

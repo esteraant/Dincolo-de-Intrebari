@@ -1,7 +1,6 @@
 #include "../headers/IntrebareMultipla.h"
 #include <sstream>
 
-///constructor
 IntrebareMultipla::IntrebareMultipla(const std::string &t,
                                      const std::vector<std::string> &rP,
                                      const std::set<int> &indiciCorecti)

@@ -9,8 +9,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include <algorithm>
-#include <stdexcept>
+
 
 struct Scor {
     std::string nume;
@@ -41,7 +40,6 @@ private:
     static bool comparaScoruri(const Scor &a, const Scor &b);
 
 public:
-    //singura met prin care putem obtine obiectul
     static Clasament &getInstanta() {
         if (instanta == nullptr) {
             instanta = new Clasament();
@@ -53,22 +51,18 @@ public:
     Clasament(const Clasament &) = delete;
 
     void operator=(const Clasament &) = delete;
-
     Clasament(Clasament &&other) noexcept;
-
     Clasament &operator=(Clasament &&other) noexcept;
-
     ~Clasament() = default;
 
     //metode I/O
     void incarca();
-
     void salveaza() const;
-
-    //metodă de logica
     void adaugaScor(const std::string &nume, size_t scor);
 
     void afiseaza() const;
+    void salveazaJson();
+    [[nodiscard]]const std::vector<Scor>& getListaScoruri() const { return listaScoruri; }
 };
 
 #endif

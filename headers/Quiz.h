@@ -28,7 +28,7 @@ public:
 
     size_t getScorTotal() const { return scorTotalGlobal; }
 
-    Quiz(const std::string &nume, std::vector<Nivel> nivele_); ///constructor de init
+    Quiz(const std::string &nume, std::vector<Nivel> nivele_);
 
     ///dezactivarea copierii pt a evita erori la Nivel
     Quiz(const Quiz &qa) = delete;
@@ -44,6 +44,7 @@ public:
 
     friend std::ostream &operator<<(std::ostream &os, const Quiz &qa);
     void oferaAjutor(const Intrebare* i) const;
+    const StatisticiJoc& getStatistici() const { return statistici; }
 };
 
 #endif

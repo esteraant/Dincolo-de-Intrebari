@@ -16,18 +16,14 @@ class ProfilUtilizator {
 private:
     std::string numeProfil;
     size_t highscoreGlobal = 0;
-    const std::string numeFisierBaza = "profil_"; //numele profilului va fi adăugat dupa _
+    const std::string numeFisierBaza = "profil_";
 
-    void salveaza() const; //salvare a starii curente
+    void salveaza() const;
 
 public:
-    //constructor de init
-    explicit ProfilUtilizator(const std::string &nume) : numeProfil(nume) {
-    }
-
+    explicit ProfilUtilizator(const std::string &nume) : numeProfil(nume) {}
 
     ProfilUtilizator(const ProfilUtilizator &other) = delete;
-
     ProfilUtilizator &operator=(const ProfilUtilizator &other) = delete;
 
     //mutarea explicita

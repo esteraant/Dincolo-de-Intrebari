@@ -16,7 +16,7 @@ bool IntrebareAdevaratFals::verificaRaspuns(int raspunsUtilizator) const {
 
 bool IntrebareAdevaratFals::verificaRaspunsText(const std::string &raspunsUtilizator) const {
     static_cast<void>(raspunsUtilizator);
-    return false; ///intrebarea nu accepta raspunsuri de tip text
+    return false;
 }
 
 int IntrebareAdevaratFals::calculeazaPunctaj() const {

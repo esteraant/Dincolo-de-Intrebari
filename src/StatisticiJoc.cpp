@@ -16,9 +16,11 @@ double StatisticiJoc::calculeazaAcuratetea() const {
     return static_cast<double>(raspunsuriCorecte) / raspunsuriTotale * 100.0;
 }
 
-void StatisticiJoc::afiseazaStatistici() const {
+void StatisticiJoc::afiseazaStatistici(int totalNivele) const {
     std::cout << "\n STATISTICI FINALE \n";
-    std::cout << "Raspunsuri totale: " << raspunsuriTotale << "\n";
-    std::cout << "Raspunsuri corecte: " << raspunsuriCorecte << "\n";
-    std::cout << "ACURATETE GLOBALA: " << calculeazaAcuratetea() << "%\n\n";
+    std::cout << "Nivele finalizate: " << getProcentProgres(totalNivele) << "%\n";
+
+    float procentPoveste = (totalNivele > 0) ? (static_cast<float>(nrPovestiDescoperite) / totalNivele) * 100 : 0;
+    std::cout << "Poveste descoperita: " << procentPoveste << "%\n";
+    std::cout << "Acuratete raspunsuri: " << calculeazaAcuratetea() << "%\n";
 }

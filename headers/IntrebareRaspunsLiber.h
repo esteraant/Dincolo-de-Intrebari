@@ -18,12 +18,9 @@ private:
 public:
     IntrebareRaspunsLiber(const std::string &t, const std::vector<std::string> &rC);
 
-    //bool verificaRaspuns(int raspunsUtilizator) const override;
-    bool verificaRaspunsText(const std::string &raspunsUtilizator) const override;
-
-    int calculeazaPunctaj() const override;
-
-    std::unique_ptr<Intrebare> clone() const override;
+    [[nodiscard]]bool verificaRaspunsText(const std::string &raspunsUtilizator) const override;
+    [[nodiscard]]int calculeazaPunctaj() const override;
+    [[nodiscard]]std::unique_ptr<Intrebare> clone() const override;
 
     void afiseazaDetalii(std::ostream &os) const override;
 

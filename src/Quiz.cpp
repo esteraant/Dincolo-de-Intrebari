@@ -4,7 +4,6 @@
 #include "IntrebareGrila.h"
 #include "IntrebareAdevaratFals.h"
 #include "IntrebareRaspunsLiber.h"
-///constructor de init
 Quiz::Quiz(const std::string &nume, std::vector<Nivel> niv)
     : numeUtilizator{nume},
       nivele{std::move(niv)},
@@ -12,18 +11,14 @@ Quiz::Quiz(const std::string &nume, std::vector<Nivel> niv)
       statistici{} {
 }
 
-//constructor de mutare
 Quiz::Quiz(Quiz &&qa)
-//muta membrii in noul obiect
     : numeUtilizator{std::move(qa.numeUtilizator)},
       nivele{std::move(qa.nivele)},
-      scorTotalGlobal{qa.scorTotalGlobal}, //copiaza (size_t)
+      scorTotalGlobal{qa.scorTotalGlobal},
       statistici{std::move(qa.statistici)} {
-    //reseteaza starea obiectului sursa
     qa.scorTotalGlobal = 0;
 }
 
-///Operator de atribuire prin mutare - evitam deep copy
 Quiz &Quiz::operator=(Quiz &&qa) {
     if (this != &qa) {
         //muta membrii mari
@@ -38,11 +33,10 @@ Quiz &Quiz::operator=(Quiz &&qa) {
     return *this;
 }
 void Quiz::oferaAjutor(const Intrebare* i) const {
-    if (!i) return; // Verificare de siguranta
+    if (!i) return;
 
     std::cout << "\n[HINT]: ";
 
-    // dynamic_cast
     if (auto* grila = dynamic_cast<const IntrebareGrila*>(i)) {
         std::cout << "Aceasta este o intrebare cu " << grila->getNumarOptiuni()
                   << " variante de raspuns. Doar una este corecta!";
@@ -71,7 +65,6 @@ void Quiz::aplicatie() {
         }
         if (!nivel.estePromovat()) {
             if (!nivel.ruleazaTest(scorTotalGlobal, statistici)) {
-                ///daca ruleazaTest returneaza false - nu a fost promovat din cauza vietilor
                 std::cout << "\nAplicatia se opreste. Ai ramas fara vieti in timpul jocului.\n";
                 return;
             }
@@ -86,13 +79,14 @@ void Quiz::aplicatie() {
         std::cout << "Vrei sa continui la Nivelul " << i + 2 << "? (1/0): ";
 
         if (!(std::cin >> raspuns)) {
-            std::cin.clear(); ///daca utilizatorul scrie ceva gresit (string in loc de int)
+            std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             raspuns = 0;
         }
 
         if (raspuns == 1) {
-            i++; ///trecem la niv urm
+            i++;
+            statistici.afiseazaStatistici(static_cast<int>(nivele.size()));
         } else {
             std::cout << "\nAplicatia se opreste. Sper ca ai avut o experienta placuta!\n";
             return;
@@ -109,13 +103,12 @@ void Quiz::aplicatie() {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     if (raspuns == 1) {
-        statistici.afiseazaStatistici();
+        statistici.afiseazaStatistici(static_cast<int>(nivele.size()));
     } else {
         std::cout << "Statisticile nu vor fi afisate. Multumiri!\n";
     }
 }
 
-///operator<<
 std::ostream &operator<<(std::ostream &os, const Quiz &qa) {
     os << "\nSituatii finale pentru " << qa.numeUtilizator << ":\n";
     for (const Nivel &nivel: qa.nivele) {

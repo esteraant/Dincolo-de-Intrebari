@@ -7,14 +7,14 @@ size_t Intrebare::nrIntrebariTotale = 0;
 Intrebare::Intrebare(const std::string &t, int rC) {
     this->text = t;
     this->raspunsCorect = rC;
-    Intrebare::nrIntrebariTotale++; ///nr total de obiecte create
+    Intrebare::nrIntrebariTotale++;
 }
 std::ostream &operator<<(std::ostream &os, const Intrebare &i) {
+//    os << "\n" << i.text << "\n";
     i.afiseazaDetalii(os);
     return os;
 }
 
-///destructor virtual
 /*Intrebare::~Intrebare() {
     Intrebare::nrIntrebariTotale--;
 }*/

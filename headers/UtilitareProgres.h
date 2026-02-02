@@ -16,7 +16,6 @@ double calculeazaProgresul(const ColectieResurse<T>& colectie) {
 
     int contor = 0;
     for (size_t i = 0; i < colectie.getDimensiune(); ++i) {
-        // Presupunem ca fiecare obiect T are o metoda .esteFinalizat()
         if (colectie[i].esteFinalizat()) {
             contor++;
         }

@@ -1,10 +1,73 @@
 #include "../headers/Nivel.h"
 #include <utility>
 #include <functional>
-//#include <stdexcept>
 #include <chrono>
 #include "IntrebareRaspunsLiber.h"
-///constructor de initializare
+#include <ftxui/dom/elements.hpp>
+#include <ftxui/screen/screen.hpp>
+
+void afiseazaDashboardNivel(const std::string& numeNivel, int vieti, size_t scor, const std::string& textIntrebare) {
+    using namespace ftxui;
+
+    std::string inimi;
+    for (int i = 0; i < 5; ++i) inimi += (i < vieti) ? " ❤️ " : " 🖤 ";
+
+    auto dashboard = vbox({
+        hbox({
+            text("  " + numeNivel) | bold | color(Color::Cyan),
+            filler(),
+            text(" SCOR GLOBAL: " + std::to_string(scor)) | bold | color(Color::Yellow),
+        }) | border,
+
+        separator(),
+
+        vbox({
+            filler(),
+            text(textIntrebare) | hcenter | bold,
+            filler(),
+        }) | size(HEIGHT, EQUAL, 5) | borderDouble | color(Color::White),
+
+        hbox({
+            text(" VIETI: "),
+            text(inimi),
+            filler()
+        })
+    }) ;
+
+    auto screen = Screen::Create(Dimension::Full(), Dimension::Fit(dashboard));
+    Render(screen, dashboard);
+
+    std::cout << "\033[2J\033[H" << std::flush;
+    std::cout << screen.ToString() << std::endl;
+}
+
+
+void afiseazaPovesteGrafic(const std::string& titlu, const std::string& continut) {
+    using namespace ftxui;
+
+    auto poveste_render = vbox({
+        text(" 📖 CAPITOL DEBLOCAT: " + titlu) | bold | color(Color::Yellow) | center,
+        separator(),
+        paragraph(continut) | color(Color::White),
+        separator(),
+        text(" Apasa ENTER pentru a merge mai departe ") | dim | hcenter
+    }) | borderDouble | color(Color::Yellow) | size(WIDTH, EQUAL, 80) | center;
+
+    auto document = vbox({
+        filler(),
+        poveste_render,
+        filler(),
+    });
+
+    auto screen = Screen::Create(Dimension::Full(), Dimension::Full());
+    Render(screen, document);
+
+    std::cout << "\033[2J\033[H" << std::flush;
+    std::cout << screen.ToString() << std::endl;
+
+    std::cin.get();
+}
+
 Nivel::Nivel(const std::string &nume, std::vector<std::unique_ptr<Intrebare> > intrebari_,
              const CapitolPoveste &poveste_)
     : nivelPromovat{false} {
@@ -13,7 +76,6 @@ Nivel::Nivel(const std::string &nume, std::vector<std::unique_ptr<Intrebare> > i
     this->poveste = poveste_;
 }
 
-///constructor de copiere
 Nivel::Nivel(const Nivel &nivel)
     : numeNivel(nivel.numeNivel),
       poveste(nivel.poveste),
@@ -24,12 +86,9 @@ Nivel::Nivel(const Nivel &nivel)
     }
 }
 
-///operator de atribuire
 Nivel &Nivel::operator=(const Nivel &nivel) {
-    ///std::cout << "Atribuire Nivel " << nivel.numeNivel << " \n";
 
     if (this != &nivel) {
-        ///creeaza o copie
         Nivel copie = nivel;
 
         ///swap de resurse - pt a evita scrierea de doua ori a codului de copiere
@@ -41,21 +100,20 @@ Nivel &Nivel::operator=(const Nivel &nivel) {
     return *this;
 }
 
-
-void Nivel::afiseazaVieti(int count, size_t scor) const {
-    ///functie pt afisarea inimilor
-
-    std::cout << "  Vieti Ramase:   ";
-
-    for (int v = 0; v < 5; v++)
-        if (v < count)
-            std::cout << "# ";
-        else
-            std::cout << "- ";
-
-    std::cout << "\n";
-    std::cout << "  Scorul Curent:      " << scor << "\n";
-};
+//
+// void Nivel::afiseazaVieti(int count, size_t scor) const {
+//
+//     std::cout << "  Vieti Ramase:   ";
+//
+//     for (int v = 0; v < 5; v++)
+//         if (v < count)
+//             std::cout << "# ";
+//         else
+//             std::cout << "- ";
+//
+//     std::cout << "\n";
+//     std::cout << "  Scorul Curent:      " << scor << "\n";
+// };
 
 
 bool Nivel::ruleazaTest(size_t &scorGlobal, StatisticiJoc &stats) {
@@ -68,6 +126,7 @@ bool Nivel::ruleazaTest(size_t &scorGlobal, StatisticiJoc &stats) {
     for (size_t i = 0; i < intrebari.size(); i++) {
         Intrebare *intrebare = intrebari[i].get();
         bool corect = false;
+        std::cout << "\n[HINT]: Analizeaza cu atentie cerinta!";
 
         ///idenfiticam tipul de intrebare - daca e raspuns liber
         const IntrebareRaspunsLiber *liberPtr = dynamic_cast<IntrebareRaspunsLiber *>(intrebare);
@@ -75,7 +134,7 @@ bool Nivel::ruleazaTest(size_t &scorGlobal, StatisticiJoc &stats) {
         while (!corect && vietiRamase > 0) {
             auto timpStart = std::chrono::steady_clock::now();
 
-            afiseazaVieti(vietiRamase, scorGlobal);
+            afiseazaDashboardNivel(numeNivel, vietiRamase, scorGlobal, intrebare->getText());
             std::cout << "\n" << *intrebare;
 
             if (liberPtr) {
@@ -84,7 +143,6 @@ bool Nivel::ruleazaTest(size_t &scorGlobal, StatisticiJoc &stats) {
                 std::cout << "Raspunsul tau (text): ";
 
                 std::getline(std::cin >> std::ws, raspunsUtilizatorStr);
-                ///std:ws ignora spatiile albe de la inceput si citim toata linia
 
                 if (intrebare->verificaRaspunsText(raspunsUtilizatorStr)) {
                     auto timpFinal = std::chrono::steady_clock::now();
@@ -155,12 +213,15 @@ bool Nivel::ruleazaTest(size_t &scorGlobal, StatisticiJoc &stats) {
         }
     }
 
-    ///dupa ce a rasp corect la toate intrebarile
     if (raspunsuriCorecte == intrebari.size()) {
         this->poveste.deblocheaza();
         this->nivelPromovat = true;
+
+        stats.bifeazaNivelTerminat();
+        stats.bifeazaPovesteDescoperita();
+
         std::cout << "\n FELICITARI! Scorul tau total este: " << scorGlobal << ".\n";
-        std::cout << this->poveste;
+        afiseazaPovesteGrafic(this->poveste.getTitlu(), this->poveste.getText());
     }
     return true;
 }
@@ -190,7 +251,6 @@ bool Nivel::estePromovat() const {
 }
 */
 
-///operator<<
 std::ostream &operator<<(std::ostream &os, const Nivel &niv) {
     os << "\n=== Nivel " << niv.numeNivel << " ===\n";
     os << "Status: ";

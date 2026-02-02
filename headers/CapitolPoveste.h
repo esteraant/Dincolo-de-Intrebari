@@ -50,6 +50,8 @@ public:
         return os;
     }
     bool esteFinalizat() const { return deblocat; }
+    const std::string& getTitlu() const { return titlu; }
+    const std::string& getText() const { return continut; }
 };
 
 #endif

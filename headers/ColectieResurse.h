@@ -16,7 +16,6 @@ public:
         return elemente.size();
     }
 
-    // Returneaza elementul de la un anumit index
     const T& operator[](size_t index) const {
         return elemente[index];
     }
