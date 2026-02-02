@@ -23,7 +23,7 @@ void Clasament::incarca() {
         listaScoruri.push_back(scorNou);
     }
     //asiguram ca lista este sortata imediat dupa incarcare
-    std::sort(listaScoruri.begin(), listaScoruri.end(), comparaScoruri);
+    std::ranges::sort(listaScoruri.begin(), listaScoruri.end(), comparaScoruri);
 }
 
 void Clasament::salveaza() const {
@@ -50,7 +50,7 @@ void Clasament::adaugaScor(const std::string& nume, size_t scor) {
     if (!gasit) {
         listaScoruri.emplace_back(nume, scor);
     }
-    std::sort(listaScoruri.begin(), listaScoruri.end(), comparaScoruri);
+    std::ranges::sort(listaScoruri.begin(), listaScoruri.end(), comparaScoruri);
     if (listaScoruri.size() > 10) listaScoruri.resize(10);
 
     salveaza();
@@ -96,7 +96,7 @@ Clasament& Clasament::operator=(Clasament&& other) noexcept {
 }*/
 using json = nlohmann::json;
 
-void Clasament::salveazaJson() {
+void Clasament::salveazaJson()  {
     using json = nlohmann::json;
     json j;
 

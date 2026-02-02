@@ -2,7 +2,6 @@
 #define UTILITAREPROGRES_H
 
 #include <iostream>
-#include <vector>
 #include "ColectieResurse.h"
 
 /**

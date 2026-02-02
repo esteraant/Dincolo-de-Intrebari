@@ -1,7 +1,6 @@
 #include "../headers/ProfilUtilizator.h"
 
-ProfilUtilizator::~ProfilUtilizator() {
-}
+ProfilUtilizator::~ProfilUtilizator()  = default;
 
 ProfilUtilizator::ProfilUtilizator(ProfilUtilizator &&other) noexcept
     : numeProfil{std::move(other.numeProfil)},
@@ -22,7 +21,7 @@ ProfilUtilizator &ProfilUtilizator::operator=(ProfilUtilizator &&other) noexcept
 std::string getCaleFisier(const std::string &numeProfil) {
     //inlocuim spatiile sau caracterele cu _ pt a preveni erorile in numele fisierului
     std::string numeCurat = numeProfil;
-    std::replace(numeCurat.begin(), numeCurat.end(), ' ', '_');
+    std::ranges::replace(numeCurat.begin(), numeCurat.end(), ' ', '_');
     return "profil_" + numeCurat + ".dat";
 }
 

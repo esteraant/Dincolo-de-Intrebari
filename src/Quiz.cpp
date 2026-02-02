@@ -19,7 +19,7 @@ Quiz::Quiz(Quiz &&qa)
     qa.scorTotalGlobal = 0;
 }
 
-Quiz &Quiz::operator=(Quiz &&qa) {
+Quiz &Quiz::operator=(Quiz &&qa)  {
     if (this != &qa) {
         //muta membrii mari
         numeUtilizator = std::move(qa.numeUtilizator);
@@ -109,6 +109,7 @@ void Quiz::aplicatie() {
     }
 }
 
+///operator<<
 std::ostream &operator<<(std::ostream &os, const Quiz &qa) {
     os << "\nSituatii finale pentru " << qa.numeUtilizator << ":\n";
     for (const Nivel &nivel: qa.nivele) {

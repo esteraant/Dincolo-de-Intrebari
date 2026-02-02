@@ -24,7 +24,7 @@ private:
     CapitolPoveste poveste;
     bool nivelPromovat;
 
-    void afiseazaVieti(int count, size_t scor) const;
+    // void afiseazaVieti(int count, size_t scor) const;
 
 public:
     Nivel(const std::string &nume, std::vector<std::unique_ptr<Intrebare> > intrebari_, const CapitolPoveste &poveste_);

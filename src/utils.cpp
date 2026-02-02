@@ -52,7 +52,7 @@ std::vector<CapitolPoveste> citestePovesti(const std::string &numeFisier) {
         while (std::getline(fin, linie) && !linie.empty())
             continutTotal += linie + "\n";
 
-        capitole.push_back(CapitolPoveste(titlu, continutTotal));
+        capitole.emplace_back(CapitolPoveste(titlu, continutTotal));
     }
     return capitole;
 }

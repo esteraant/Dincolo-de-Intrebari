@@ -10,7 +10,6 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
-#include <stdexcept>
 
 class ProfilUtilizator {
 private:
@@ -41,8 +40,8 @@ public:
     void actualizeazaHighscore(size_t scorNou);
 
     //getteri
-    const std::string &getNumeProfil() const { return numeProfil; }
-    size_t getHighscoreGlobal() const { return highscoreGlobal; }
+    [[nodiscard]]const std::string &getNumeProfil() const { return numeProfil; }
+    [[nodiscard]]size_t getHighscoreGlobal() const { return highscoreGlobal; }
 };
 
 #endif

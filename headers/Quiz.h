@@ -26,7 +26,7 @@ public:
     //     return nivele;
     // }
 
-    size_t getScorTotal() const { return scorTotalGlobal; }
+    [[nodiscard]]size_t getScorTotal() const { return scorTotalGlobal; }
 
     Quiz(const std::string &nume, std::vector<Nivel> nivele_);
 
@@ -44,7 +44,7 @@ public:
 
     friend std::ostream &operator<<(std::ostream &os, const Quiz &qa);
     void oferaAjutor(const Intrebare* i) const;
-    const StatisticiJoc& getStatistici() const { return statistici; }
+    [[nodiscard]]const StatisticiJoc& getStatistici() const { return statistici; }
 };
 
 #endif

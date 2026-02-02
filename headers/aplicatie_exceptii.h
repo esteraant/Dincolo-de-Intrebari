@@ -5,7 +5,6 @@
  *
  */
 
-#include <stdexcept>
 #include <string>
 
 ///clasa de baza
@@ -18,7 +17,7 @@ public:
     explicit AplicatieExceptie(const std::string &msg) : mesaj{msg} {
     }
 
-    virtual const char *what() const noexcept override {
+    [[nodiscard]]virtual const char *what() const noexcept override {
         return mesaj.c_str();
     }
 };

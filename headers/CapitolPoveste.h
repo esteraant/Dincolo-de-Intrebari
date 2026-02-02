@@ -49,9 +49,9 @@ public:
         }
         return os;
     }
-    bool esteFinalizat() const { return deblocat; }
-    const std::string& getTitlu() const { return titlu; }
-    const std::string& getText() const { return continut; }
+    //bool esteFinalizat() const { return deblocat; }
+    [[nodiscard]]const std::string& getTitlu() const { return titlu; }
+    [[nodiscard]]const std::string& getText() const { return continut; }
 };
 
 #endif

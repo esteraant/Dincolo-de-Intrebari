@@ -7,7 +7,6 @@
  */
 
 #include <iostream>
-#include <vector>
 #include <string>
 #include <memory>
 
@@ -30,33 +29,33 @@ public:
 
     virtual ~Intrebare() = default;
 
-    virtual bool verificaRaspuns(int raspunsUtilizator) const {
+    [[nodiscard]]virtual bool verificaRaspuns(int raspunsUtilizator) const {
         static_cast<void>(raspunsUtilizator); //pt advertisment git
         return false;
     }
 
-    virtual bool verificaRaspunsText(const std::string &raspunsUtilizator) const = 0;
+    [[nodiscard]]virtual bool verificaRaspunsText(const std::string &raspunsUtilizator) const = 0;
 
-    virtual int calculeazaPunctaj() ///functie virtuala
+    [[nodiscard]]virtual int calculeazaPunctaj() ///functie virtuala
     const = 0;
 
     ///permite copierea obiectelor derivate
-    virtual std::unique_ptr<Intrebare> clone() const = 0;
+    [[nodiscard]]virtual std::unique_ptr<Intrebare> clone() const = 0;
 
     virtual void afiseazaDetalii(std::ostream &os) const = 0;
 
     virtual void afiseazaTipIntrebare() const = 0;
-    const std::string& getText() const { return text; }
+    [[nodiscard]]const std::string& getText() const { return text; }
 
     /*static size_t getContorIntrebari() {
         return nrIntrebariTotale;
     }*/
 
     ///interfata non-virtuala
-    void afiseaza(std::ostream &os) const {
-        os << "[INTREBARE]: " << text << "\n";
-        afiseazaDetalii(os); ///apel polimorfic
-    }
+    // void afiseaza(std::ostream &os) const {
+    //    //     os << "[INTREBARE]: " << text << "\n";
+    //    //     afiseazaDetalii(os); ///apel polimorfic
+    //    // }
 
     ///gettere comune
     /*const std::string& getText() const;

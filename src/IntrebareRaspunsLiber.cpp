@@ -1,5 +1,4 @@
 #include "../headers/IntrebareRaspunsLiber.h"
-#include <algorithm>
 #include <cctype>
 #include <sstream>
 #include <vector>

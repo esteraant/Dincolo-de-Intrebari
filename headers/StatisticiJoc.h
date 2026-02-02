@@ -23,10 +23,10 @@ public:
     void adaugaRaspuns(bool corect);
 
     ///calculam procentul
-    double calculeazaAcuratetea() const;
+    [[nodiscard]]double calculeazaAcuratetea() const;
 
     void afiseazaStatistici(int totalNivele) const;
-    float getProcentProgres(int totalNivele) const {
+    [[nodiscard]]float getProcentProgres(int totalNivele) const {
         if (totalNivele == 0) return 0;
         return (static_cast<float>(nrNiveleTerminate) / totalNivele) * 100;
     }

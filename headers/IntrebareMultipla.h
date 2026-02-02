@@ -9,8 +9,6 @@
 
 #include "Intrebare.h"
 #include <vector>
-#include <numeric>
-#include <algorithm>
 #include <set>
 
 class IntrebareMultipla : public Intrebare {
